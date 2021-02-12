@@ -13,7 +13,7 @@ Monsters:
     pathfinding: 1 (random)
   
   2. Goblin:
-    symbol: G
+    symbol: o
     levels: 1-5,
     stats
       health: 5
@@ -68,7 +68,7 @@ Monster * selectMonster(int level) {
       return createMonster('x', 2, 1, 1, 1);
       break;
     case 2: // Goblin
-      return createMonster('G', 5, 3, 1, 2);
+      return createMonster('o', 5, 3, 1, 2);
       break;
     case 3: // Troll
       return createMonster('T', 15, 5, 1, 1);
@@ -89,8 +89,8 @@ Monster * createMonster(char symbol, int health, int attack, int defence, int pa
 }
 
 void setStartingPosition(Monster * monster, Room * room, char ** tiles) {
-  monster->position.x = (rand() % (room->width - 2)) + room->position.x + 1;
-  monster->position.y = (rand() % (room->height - 2)) + room->position.y + 1;
-  
+  monster->position = malloc(sizeof(Position));
+  monster->position->x = (rand() % (room->width - 2)) + room->position.x + 1;
+  monster->position->y = (rand() % (room->height - 2)) + room->position.y + 1;
   drawUnit(tiles, monster->position, 0, 0, monster->symbol);
 }

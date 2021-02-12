@@ -2,8 +2,8 @@
 
 void debug(char input, Player * player) {
   mvprintw(36, 0, "Input: %c", input);
-  mvprintw(37, 0, "Player: %i, %i", player->position.x, player->position.y);
-  move(player->position.y, player->position.x);
+  mvprintw(37, 0, "Player: %i, %i", player->position->x, player->position->y);
+  move(player->position->y, player->position->x);
 }
 
 void createBorders() {
@@ -48,11 +48,9 @@ void drawRoom(Room * room) {
   mvprintw(room->doors[3]->y, room->doors[3]->x, "+");
 }
 
-void drawUnit(char ** tiles, Position position, int xOffset, int yOffset, char symbol) {
-  char buffer[8];
-  sprintf(buffer, "%c", tiles[position.y][position.x]);
-  mvprintw(position.y, position.x, buffer);
+void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol) {
+  mvprintw(position->y, position->x, "%c", tiles[position->y][position->x]);
   
-  mvprintw(position.y + yOffset, position.x + xOffset, "%c", symbol);
-  move(position.y + yOffset, position.x + xOffset);
+  mvprintw(position->y + yOffset, position->x + xOffset, "%c", symbol);
+  move(position->y + yOffset, position->x + xOffset);
 }

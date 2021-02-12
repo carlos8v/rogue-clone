@@ -10,14 +10,14 @@ Level * createLevel(int level) {
   return newLevel;
 }
 
-bool checkPosition(int xOffset, int yOffset, Position position) {
-  switch (mvinch(position.y + yOffset, position.x + xOffset)) {
+bool checkPosition(int xOffset, int yOffset, Position * position) {
+  switch (mvinch(position->y + yOffset, position->x + xOffset)) {
     case '+':
     case '#':
     case '.':
       return true;
     default:
-      move(position.y, position.x);
+      move(position->y, position->x);
       return false;
   }
 }
