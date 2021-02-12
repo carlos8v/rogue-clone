@@ -6,11 +6,14 @@ Player * playerSetup(char ** tiles) {
   newPlayer->position->x = 15;
   newPlayer->position->y = 15;
 
+  newPlayer->symbol = '@';
+
   newPlayer->stats.health = 10;
   newPlayer->stats.attack = 5;
   newPlayer->stats.defence = 5;
 
-  drawUnit(tiles, newPlayer->position, 0, 0, '@');
+  drawUnit(tiles, newPlayer->position, 0, 0, newPlayer->symbol);
+  move(newPlayer->position->y, newPlayer->position->x);
   
   return newPlayer;
 }

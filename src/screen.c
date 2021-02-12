@@ -50,7 +50,5 @@ void drawRoom(Room * room) {
 
 void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol) {
   mvprintw(position->y, position->x, "%c", tiles[position->y][position->x]);
-  
   mvprintw(position->y + yOffset, position->x + xOffset, "%c", symbol);
-  move(position->y + yOffset, position->x + xOffset);
 }

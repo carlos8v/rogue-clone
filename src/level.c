@@ -17,7 +17,6 @@ bool checkPosition(int xOffset, int yOffset, Position * position) {
     case '.':
       return true;
     default:
-      move(position->y, position->x);
       return false;
   }
 }

@@ -7,7 +7,7 @@ OUT = nethack
 
 SOURCES = ${SRCDIR}*.c
 
-all: compile run clean
+all: clean compile run
 
 compile:
 	${CC} ${SOURCES} ${CFLAGS} -o ${OUTDIR}${OUT}
@@ -16,4 +16,4 @@ run:
 	${OUTDIR}${OUT}
 
 clean:
-	rm ${OUTDIR}*
+	rm ${OUTDIR}* -f

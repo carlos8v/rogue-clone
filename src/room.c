@@ -62,19 +62,16 @@ void connectDoors(Position * doorOne, Position * doorTwo) {
     }
     else if ((abs((actual.x + 1) - doorTwo->x) < abs(actual.x - doorTwo->x))
       && (mvinch(actual.y, actual.x + 1) == ' ')) {
-
       previous.x = actual.x;
       actual.x += 1;
     }
     else if ((abs((actual.y + 1) - doorTwo->y) < abs(actual.y - doorTwo->y)) 
       && (mvinch(actual.y + 1, actual.x) == ' ')) {
-
       previous.y = actual.y;
       actual.y += 1;
     }
     else if ((abs((actual.x - 1) - doorTwo->x) < abs(actual.x - doorTwo->x))
       && (mvinch(actual.y, actual.x - 1) == ' ')) {
-
       previous.x = actual.x;
       actual.x -= 1;
     } else {
