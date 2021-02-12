@@ -6,6 +6,7 @@ Level * createLevel(int level) {
   newLevel->numberOfRooms = 3;
   newLevel->rooms = roomsSetup();
   newLevel->tiles = saveLevelPositions();
+  addMonsters(newLevel);
   return newLevel;
 }
 
@@ -15,11 +16,9 @@ bool checkPosition(int xOffset, int yOffset, Position position) {
     case '#':
     case '.':
       return true;
-      break;
     default:
       move(position.y, position.x);
       return false;
-      break;
   }
 }
 

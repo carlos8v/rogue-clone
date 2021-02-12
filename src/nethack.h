@@ -19,13 +19,25 @@ typedef struct Level {
   struct Item ** items;
 } Level;
 
-typedef struct Monster {} Monster;
-typedef struct Item {} Item;
+typedef struct Stats {
+  int health;
+  int attack;
+  int defence;
+} Stats;
 
 typedef struct Position {
   int x;
   int y;
 } Position;
+
+typedef struct Monster {
+  char symbol;
+  int pathfinding;
+  Stats stats;
+  Position position;
+} Monster;
+
+typedef struct Item {} Item;
 
 typedef struct Room {
   int height;
@@ -36,13 +48,13 @@ typedef struct Room {
 
 typedef struct Player {
   Position position;
-  int health;
+  Stats stats;
 } Player;
 
 void screenSetup();
 void createBorders();
 void drawRoom(Room * room);
-void drawUnit(char ** tiles, Position position, int xOffset, int yOffset, char ch);
+void drawUnit(char ** tiles, Position position, int xOffset, int yOffset, char symbol);
 void debug(char input, Player * player);
 
 void handleInput(int input, Player * player, char ** tiles);
@@ -53,6 +65,11 @@ char ** saveLevelPositions();
 bool checkPosition(int xOffset, int yOffset, Position position);
 
 Player * playerSetup(char ** tiles);
+
+void addMonsters(Level * level);
+Monster * selectMonster(int level);
+Monster * createMonster(char symbol, int health, int attack, int defence, int pathfinding);
+void setStartingPosition(Monster * monster, Room * room, char ** tiles);
 
 Room ** roomsSetup();
 Room * createRoom(int x, int y, int height, int width);

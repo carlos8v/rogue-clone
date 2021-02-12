@@ -48,11 +48,11 @@ void drawRoom(Room * room) {
   mvprintw(room->doors[3]->y, room->doors[3]->x, "+");
 }
 
-void drawUnit(char ** tiles, Position position, int xOffset, int yOffset, char ch) {
+void drawUnit(char ** tiles, Position position, int xOffset, int yOffset, char symbol) {
   char buffer[8];
   sprintf(buffer, "%c", tiles[position.y][position.x]);
   mvprintw(position.y, position.x, buffer);
   
-  mvprintw(position.y + yOffset, position.x + xOffset, "@");
+  mvprintw(position.y + yOffset, position.x + xOffset, "%c", symbol);
   move(position.y + yOffset, position.x + xOffset);
 }
