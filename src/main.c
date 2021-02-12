@@ -3,40 +3,16 @@
 int main() {
   screenSetup();
 
-  int ch;
-  Player * player = playerSetup();
+  Level * level = createLevel(1);
 
-  while ((ch = getch()) != 'q') {
-    handleInput(ch, player);
+  int input;
+  Player * player = playerSetup(level->tiles);
+
+  while ((input = getch()) != 'Q') {
+    handleInput(input, player, level->tiles);
   }
 
   endwin();
 
   return 0;
-}
-
-void handleInput(int input, Player * player) {
-  switch(input) {
-    case 'w':
-      checkPosition(0, -1, player);
-      break;
-    case 'a':
-      checkPosition(-1, 0, player);
-      break;
-    case 'd':
-      checkPosition(1, 0, player);
-      break;
-    case 's':
-      checkPosition(0, 1, player);
-      break;
-    default:
-      break;
-  }
-}
-
-void screenSetup() {
-  initscr();
-  srand(time(NULL));
-  noecho();
-  mapSetup();  
 }
