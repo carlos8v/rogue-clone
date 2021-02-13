@@ -12,7 +12,7 @@ int main() {
   do {
     if (handleInput(input, player, level->tiles)) {
       if (++monsterMove > 1) {
-        moveMonsters(level, player);
+        moveMonsters(level->monsters, level->numberOfMonsters, player, level->tiles);
         monsterMove = 0;
       }
       move(player->position->y, player->position->x);

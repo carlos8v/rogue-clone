@@ -66,13 +66,13 @@ int screenSetup() {
     init_color(6, pink_color[0], pink_color[1], pink_color[2]);
     init_color(7, fg_color[0], fg_color[1], fg_color[2]);
 
-    init_pair(1, 7, 0); // Branco
-    init_pair(2, 1, 0); // Verde
-    init_pair(3, 2, 0); // Ciano
-    init_pair(4, 3, 0); // Laranja
-    init_pair(5, 4, 0); // Vermelho
-    init_pair(6, 5, 0); // Amarelo
-    init_pair(7, 6, 0); // Rosa
+    init_pair(WHITE, 7, 0);
+    init_pair(GREEN, 1, 0);
+    init_pair(CYAN, 2, 0);
+    init_pair(ORANGE, 3, 0);
+    init_pair(RED, 4, 0);
+    init_pair(YELLOW, 5, 0);
+    init_pair(PINK, 6, 0);
     wattron(stdscr, COLOR_PAIR(1));
   } else {
     mvprintw(0, 0, "Seu terminal não aceita cores");
