@@ -44,9 +44,9 @@ bool handleInput(int input, Player * player, char ** tiles) {
     case 0:
       break;
     default:
-      mvprintw(38, 0, "Input: Comando não encontrado");
+      mvprintw(23, 0, "Input: Comando não encontrado");
       getch();
-      mvprintw(38, 0, "                              ");
+      mvprintw(23, 0, "                              ");
       break;
   }
   debug(input, player);

@@ -1,18 +1,9 @@
 #include "nethack.h"
 
 void debug(char input, Player * player) {
-  mvprintw(36, 0, "Input: %c                      ", input);
-  mvprintw(37, 0, "Player: %i, %i", player->position->x, player->position->y);
+  mvprintw(21, 0, "Input: %c                      ", input);
+  mvprintw(22, 0, "Player: %i, %i", player->position->x, player->position->y);
   move(player->position->y, player->position->x);
-}
-
-void createBorders() {
-  int width = 100;
-  int height = 30;
-  WINDOW * win = newwin(height + 1, width + 1, 0, 0);
-  refresh();
-  box(win, 0, 0);
-  wrefresh(win);
 }
 
 void screenSetup() {
@@ -53,8 +44,6 @@ void screenSetup() {
   keypad(stdscr, TRUE);
   srand(time(NULL));
   noecho();
-
-  createBorders();
 }
 
 void drawRoom(Room * room) {
