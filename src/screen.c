@@ -6,6 +6,43 @@ void debug(char input, Player * player) {
   move(player->position->y, player->position->x);
 }
 
+void printColors() {
+  attron(COLOR_PAIR(1));
+  mvprintw(0, 0, "Teste");
+  attron(COLOR_PAIR(2));
+  mvprintw(1, 0, "Teste");
+  attron(COLOR_PAIR(3));
+  mvprintw(2, 0, "Teste");
+  attron(COLOR_PAIR(4));
+  mvprintw(3, 0, "Teste");
+  attron(COLOR_PAIR(5));
+  mvprintw(4, 0, "Teste");
+  attron(COLOR_PAIR(6));
+  mvprintw(5, 0, "Teste");
+  attron(COLOR_PAIR(7));
+  mvprintw(6, 0, "Teste");
+
+  attron(COLOR_PAIR(1) | A_REVERSE);
+  mvprintw(0, 6, "Teste");
+  attron(COLOR_PAIR(2) | A_REVERSE);
+  mvprintw(1, 6, "Teste");
+  attron(COLOR_PAIR(3) | A_REVERSE);
+  mvprintw(2, 6, "Teste");
+  attron(COLOR_PAIR(4) | A_REVERSE);
+  mvprintw(3, 6, "Teste");
+  attron(COLOR_PAIR(5) | A_REVERSE);
+  mvprintw(4, 6, "Teste");
+  attron(COLOR_PAIR(6) | A_REVERSE);
+  mvprintw(5, 6, "Teste");
+  attron(COLOR_PAIR(7) | A_REVERSE);
+  mvprintw(6, 6, "Teste");
+  attroff(COLOR_PAIR(7) | A_REVERSE);
+
+  refresh();
+  wrefresh(stdscr);
+  getch();
+}
+
 int screenSetup() {
   initscr();
   start_color();

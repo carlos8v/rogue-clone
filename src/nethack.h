@@ -3,6 +3,7 @@
 
 #include <ncurses.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 typedef struct Level {
@@ -31,6 +32,7 @@ typedef struct Position {
 } Position;
 
 typedef struct Monster {
+  char name[20];
   char symbol;
   bool seeking;
   Stats stats;
@@ -58,7 +60,9 @@ int screenSetup();
 void createBorders();
 void drawRoom(Room * room);
 void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol, int color);
+
 void debug(char input, Player * player);
+void printColors();
 
 bool handleInput(int input, Player * player, char ** tiles);
 
@@ -71,7 +75,7 @@ Player * playerSetup(char ** tiles);
 
 void addMonsters(Level * level);
 Monster * selectMonster(int level);
-Monster * createMonster(char symbol, int health, int attack, int defence, int seeking, int color);
+Monster * createMonster(char name[20], char symbol, int health, int attack, int defence, int seeking, int color);
 void setStartingPosition(Monster * monster, Room * room, char ** tiles);
 void moveMonsters(Level * level, Player * player);
 Position seek(Position * monsterPosition, Position * destination);
