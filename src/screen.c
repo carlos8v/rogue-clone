@@ -7,30 +7,17 @@ void debug(char input, Player * player) {
 }
 
 void createBorders() {
-  for (int j = 0; j <= 30; j+=30) {
-    for (int i = 0; i <= 100; i++) {
-      mvprintw(j, i, "*");
-    }
-  }
-
-  for (int i = 0; i <= 100; i+=100) {
-    for (int j = 1; j < 30; j++) {
-      mvprintw(j, i, "*");
-    }
-  }
+  int width = 100;
+  int height = 30;
+  WINDOW * win = newwin(height + 1, width + 1, 0, 0);
+  refresh();
+  box(win, 0, 0);
+  wrefresh(win);
 }
 
 void screenSetup() {
   initscr();
   start_color();
-  // #define COLOR_BLACK	0
-  // #define COLOR_RED	1
-  // #define COLOR_GREEN	2
-  // #define COLOR_YELLOW	3
-  // #define COLOR_BLUE	4
-  // #define COLOR_MAGENTA	5
-  // #define COLOR_CYAN	6
-  // #define COLOR_WHITE	7
 
   if (can_change_color()) {
     short bg_color[3] = { 156.862745098, 164.705882353, 211.764705882 };
@@ -58,6 +45,9 @@ void screenSetup() {
     init_pair(5, 4, 0); // Vermelho
     init_pair(6, 5, 0); // Amarelo
     init_pair(7, 6, 0); // Rosa
+  } else {
+    mvprintw(0, 0, "Seu terminal não aceita cores");
+    getch();
   }
 
   keypad(stdscr, TRUE);

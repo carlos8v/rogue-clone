@@ -65,13 +65,13 @@ Monster * selectMonster(int level) {
 
   switch(monsterType) {
     case 1: // Spider
-      return createMonster('x', 2, 1, 1, false, 5);
+      return createMonster('x', 2, 1, 1, false, 1);
       break;
     case 2: // Goblin
-      return createMonster('o', 5, 3, 1, true, 5);
+      return createMonster('o', 5, 3, 1, true, 1);
       break;
     case 3: // Troll
-      return createMonster('T', 15, 5, 1, false, 5);
+      return createMonster('T', 15, 5, 1, false, 4);
       break;
   }
 }
