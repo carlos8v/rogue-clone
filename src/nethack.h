@@ -4,6 +4,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <time.h>
 
 typedef struct Level {
@@ -24,6 +25,7 @@ typedef struct Stats {
   int health;
   int attack;
   int defence;
+  int vision;
 } Stats;
 
 typedef struct Position {
@@ -83,9 +85,11 @@ Player * playerSetup();
 
 void addMonsters(Level * level);
 Monster * selectMonster(int level);
-Monster * createMonster(char name[20], char symbol, int stats[3], int color);
+Monster * createMonster(char name[20], char symbol, int stats[4], int color);
 void setStartingPosition(Monster * monster, Room * room);
+
 void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player, char ** tiles);
+bool shouldSeek(Position * initial, Position * final, int maxDistance);
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);
 

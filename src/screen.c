@@ -4,7 +4,7 @@
  * Printa na tela informações úteis para debugger
  */
 void debug(char input, Player * player) {
-  mvprintw(21, 0, "Input: %c                      ", input);
+  mvprintw(21, 0, "Input: %c ", input);
   mvprintw(22, 0, "Player: %i, %i", player->position->x, player->position->y);
   move(player->position->y, player->position->x);
 }

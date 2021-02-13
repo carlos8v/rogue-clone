@@ -17,6 +17,7 @@ Player * playerSetup() {
   newPlayer->stats.health = 10;
   newPlayer->stats.attack = 5;
   newPlayer->stats.defence = 5;
+  newPlayer->stats.vision = 5;
   
   return newPlayer;
 }

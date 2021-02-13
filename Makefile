@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -lncurses
+CFLAGS = -lncurses -lm
 
 SRCDIR = ./src/
 OUTDIR = ./build/

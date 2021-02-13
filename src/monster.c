@@ -55,22 +55,22 @@ Monster * selectMonster(int level) {
     { ORANGE, WHITE, CYAN }
   };
 
-  int monstersStats[3][3][3] = {
+  int monstersStats[3][3][4] = {
     {
-    // HP, Atk, Def
-      { 2, 1, 1 }, // Spider
-      { 3, 2, 2 }, // Giant Spider
-      { 3, 3, 2 }  // Scorpion
+    // HP, Atk, Def, Vision
+      { 2, 1, 1, 3 }, // Spider
+      { 3, 2, 2, 4 }, // Giant Spider
+      { 3, 3, 2, 4 }  // Scorpion
     },
     {
-      { 4, 3, 1 }, // Goblin
-      { 5, 4, 2 }, // Hobgoblin
-      { 6, 4, 4 }  // Orc
+      { 4, 3, 1, 6 }, // Goblin
+      { 5, 4, 2, 7 }, // Hobgoblin
+      { 6, 4, 4, 8 }  // Orc
     },
     {
-      { 15, 5, 4 }, // Troll
-      { 15, 5, 4 }, // Ice Troll
-      { 15, 5, 4 }  // Water Troll
+      { 15, 5, 4, 7 }, // Troll
+      { 15, 5, 4, 7 }, // Ice Troll
+      { 15, 5, 4, 8 }  // Water Troll
     }
   };
 
@@ -113,6 +113,7 @@ Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
   newMonster->stats.health = stats[0];
   newMonster->stats.attack = stats[1];
   newMonster->stats.defence = stats[2];
+  newMonster->stats.vision = stats[3];
   newMonster->seeking = false;
 
   return newMonster;
@@ -141,6 +142,9 @@ void setStartingPosition(Monster * monster, Room * room) {
  */
 void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player, char ** tiles) {
   for (int i = 0; i < numberOfMonsters; i++) {
+
+    monsters[i]->seeking = shouldSeek(monsters[i]->position, player->position, monsters[i]->stats.vision);
+
     Position offset;
     if (monsters[i]->seeking) {
       offset = seek(monsters[i]->position, player->position);
@@ -154,6 +158,20 @@ void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player, ch
     monsters[i]->position->x += offset.x;
     monsters[i]->position->y += offset.y;
   }
+}
+
+/**
+ * Retorna se o jogador está no campo de visão do monstro 
+ *
+ * @param *Position initial
+ * @param *Position final
+ * @param int maxDistance
+ * @return bool
+ */
+bool shouldSeek(Position * initial, Position * final, int maxDistance) {
+  double distance = sqrt(pow(final->x - initial->x, 2) + pow(final->y - initial->y, 2));
+  if (distance <= maxDistance) return true;
+  return false;
 }
 
 /**
