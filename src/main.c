@@ -1,7 +1,7 @@
 #include "nethack.h"
 
 int main() {
-  screenSetup();
+  if (!screenSetup()) return 0;
 
   Level * level = createLevel(1);
 

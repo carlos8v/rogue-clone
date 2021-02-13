@@ -6,7 +6,7 @@ void debug(char input, Player * player) {
   move(player->position->y, player->position->x);
 }
 
-void screenSetup() {
+int screenSetup() {
   initscr();
   start_color();
 
@@ -19,7 +19,7 @@ void screenSetup() {
     short red_color[3] = { 1000, 333.333333333, 333.333333333 };
     short yellow_color[3] = { 945.098039216, 1000, 549.019607843 };
     short pink_color[3] = { 1000, 474.509803922, 776.470588235 };
-    
+
     init_color(0, bg_color[0], bg_color[1], bg_color[2]);
     init_color(1, green_color[0], green_color[1], green_color[2]);
     init_color(2, cyan_color[0], cyan_color[1], cyan_color[2]);
@@ -28,7 +28,7 @@ void screenSetup() {
     init_color(5, yellow_color[0], yellow_color[1], yellow_color[2]);
     init_color(6, pink_color[0], pink_color[1], pink_color[2]);
     init_color(7, fg_color[0], fg_color[1], fg_color[2]);
-    
+
     init_pair(1, 7, 0); // Branco
     init_pair(2, 1, 0); // Verde
     init_pair(3, 2, 0); // Ciano
@@ -36,14 +36,19 @@ void screenSetup() {
     init_pair(5, 4, 0); // Vermelho
     init_pair(6, 5, 0); // Amarelo
     init_pair(7, 6, 0); // Rosa
+    wattron(stdscr, COLOR_PAIR(1));
   } else {
     mvprintw(0, 0, "Seu terminal não aceita cores");
     getch();
+    endwin();
+    return 0;
   }
 
   keypad(stdscr, TRUE);
   srand(time(NULL));
   noecho();
+
+  return 1;
 }
 
 void drawRoom(Room * room) {

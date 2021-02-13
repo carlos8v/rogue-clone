@@ -54,7 +54,7 @@ typedef struct Player {
   Stats stats;
 } Player;
 
-void screenSetup();
+int screenSetup();
 void createBorders();
 void drawRoom(Room * room);
 void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol, int color);
