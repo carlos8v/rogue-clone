@@ -11,7 +11,8 @@ Level * createLevel(int level) {
 }
 
 bool checkPosition(int xOffset, int yOffset, Position * position) {
-  switch (mvinch(position->y + yOffset, position->x + xOffset)) {
+  char target;
+  switch (target = mvinch(position->y + yOffset, position->x + xOffset)) {
     case '+':
     case '#':
     case '.':

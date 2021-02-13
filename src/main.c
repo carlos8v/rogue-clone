@@ -5,19 +5,19 @@ int main() {
 
   Level * level = createLevel(1);
 
-  int input;
+  int input = 0;
   Player * player = playerSetup(level->tiles);
 
   int monsterMove = 0;
-  while ((input = getch()) != 'Q') {
+  do {
     if (handleInput(input, player, level->tiles)) {
       if (++monsterMove > 1) {
         moveMonsters(level, player);
         monsterMove = 0;
       }
       move(player->position->y, player->position->x);
-    };
-  }
+    }
+  } while ((input = getch()) != 'Q');
 
   endwin();
 

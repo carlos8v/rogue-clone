@@ -34,6 +34,7 @@ typedef struct Monster {
   char symbol;
   bool seeking;
   Stats stats;
+  int color;
   Position * position;
 } Monster;
 
@@ -49,13 +50,14 @@ typedef struct Room {
 typedef struct Player {
   Position * position;
   char symbol;
+  int color;
   Stats stats;
 } Player;
 
 void screenSetup();
 void createBorders();
 void drawRoom(Room * room);
-void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol);
+void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol, int color);
 void debug(char input, Player * player);
 
 bool handleInput(int input, Player * player, char ** tiles);
@@ -69,7 +71,7 @@ Player * playerSetup(char ** tiles);
 
 void addMonsters(Level * level);
 Monster * selectMonster(int level);
-Monster * createMonster(char symbol, int health, int attack, int defence, int pathfinding);
+Monster * createMonster(char symbol, int health, int attack, int defence, int seeking, int color);
 void setStartingPosition(Monster * monster, Room * room, char ** tiles);
 void moveMonsters(Level * level, Player * player);
 Position seek(Position * monsterPosition, Position * destination);

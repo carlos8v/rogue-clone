@@ -65,25 +65,26 @@ Monster * selectMonster(int level) {
 
   switch(monsterType) {
     case 1: // Spider
-      return createMonster('x', 2, 1, 1, false);
+      return createMonster('x', 2, 1, 1, false, 5);
       break;
     case 2: // Goblin
-      return createMonster('o', 5, 3, 1, true);
+      return createMonster('o', 5, 3, 1, true, 5);
       break;
     case 3: // Troll
-      return createMonster('T', 15, 5, 1, false);
+      return createMonster('T', 15, 5, 1, false, 5);
       break;
   }
 }
 
-Monster * createMonster(char symbol, int health, int attack, int defence, int pathfinding) {
+Monster * createMonster(char symbol, int health, int attack, int defence, int seeking, int color) {
   Monster * newMonster = malloc(sizeof(Monster));
   
+  newMonster->color = color;
   newMonster->symbol = symbol;
   newMonster->stats.health = health;
   newMonster->stats.attack = attack;
   newMonster->stats.defence = defence;
-  newMonster->seeking = pathfinding;
+  newMonster->seeking = seeking;
 
   return newMonster;
 }
@@ -92,14 +93,15 @@ void setStartingPosition(Monster * monster, Room * room, char ** tiles) {
   monster->position = malloc(sizeof(Position));
   monster->position->x = (rand() % (room->width - 2)) + room->position.x + 1;
   monster->position->y = (rand() % (room->height - 2)) + room->position.y + 1;
-  drawUnit(tiles, monster->position, 0, 0, monster->symbol);
+  drawUnit(tiles, monster->position, 0, 0, monster->symbol, monster->color);
 }
 
 void moveMonsters(Level * level, Player * player) {
   for (int i = 0; i < level->numberOfMonsters; i++) {
     if (level->monsters[i]->seeking) {
       Position offset = seek(level->monsters[i]->position, player->position);
-      drawUnit(level->tiles, level->monsters[i]->position, offset.x, offset.y, level->monsters[i]->symbol);
+      drawUnit(level->tiles, level->monsters[i]->position, offset.x, offset.y,
+        level->monsters[i]->symbol, level->monsters[i]->color);
       level->monsters[i]->position->x += offset.x;
       level->monsters[i]->position->y += offset.y;
     }
