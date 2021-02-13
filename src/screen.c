@@ -1,11 +1,17 @@
 #include "nethack.h"
 
+/**
+ * Printa na tela informações úteis para debugger
+ */
 void debug(char input, Player * player) {
   mvprintw(21, 0, "Input: %c                      ", input);
   mvprintw(22, 0, "Player: %i, %i", player->position->x, player->position->y);
   move(player->position->y, player->position->x);
 }
 
+/**
+ * Printa na tela todos os conjutos de cores
+ */
 void printColors() {
   attron(COLOR_PAIR(1));
   mvprintw(0, 0, "Teste");
@@ -43,7 +49,11 @@ void printColors() {
   getch();
 }
 
-int screenSetup() {
+/**
+ * Inicializa as configurações iniciais da tela
+ * @return bool
+ */
+bool screenSetup() {
   initscr();
   start_color();
 
@@ -78,16 +88,20 @@ int screenSetup() {
     mvprintw(0, 0, "Seu terminal não aceita cores");
     getch();
     endwin();
-    return 0;
+    return false;
   }
 
   keypad(stdscr, TRUE);
   srand(time(NULL));
   noecho();
 
-  return 1;
+  return true;
 }
 
+/**
+ * Printa na tela os caractéries corretos da sala
+ * @param *Room room
+ */
 void drawRoom(Room * room) {
   int i, j;
   for (i = room->position.x; i < room->position.x + room->width; i++) {
@@ -108,6 +122,17 @@ void drawRoom(Room * room) {
   mvprintw(room->doors[3]->y, room->doors[3]->x, "+");
 }
 
+/**
+ * Printa na tela o caractére antigo do level e a unidade (jogador ou monstro)
+ * em sua nova posição baseada no xOffset e yOffset
+ * 
+ * @param **char tiles
+ * @param *Position position
+ * @param int xOffset
+ * @param int yOffset
+ * @param char symbol
+ * @param int color
+ */
 void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol, int color) {
   mvprintw(position->y, position->x, "%c", tiles[position->y][position->x]);
   attron(COLOR_PAIR(color));

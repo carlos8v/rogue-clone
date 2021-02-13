@@ -1,5 +1,10 @@
 #include "nethack.h"
 
+/**
+ * Cria a estrutura inicial de todas as salas do level atual
+ *
+ * @returns **Room
+ */
 Room ** roomsSetup() {
   Room ** rooms = malloc(sizeof(Room) * 3);
   rooms[0] = createRoom(13, 13, 6, 8);
@@ -17,6 +22,11 @@ Room ** roomsSetup() {
   return rooms;
 }
 
+/**
+ * Retorna uma nova instância da struct Room
+ *
+ * @returns *Room
+ */
 Room * createRoom(int x, int y, int height, int width) {
   Room * newRoom = malloc(sizeof(Room));
   newRoom->position.x = x;
@@ -45,6 +55,12 @@ Room * createRoom(int x, int y, int height, int width) {
   return newRoom;
 }
 
+/**
+ * Cria corredores entre as duas portas passadas
+ *
+ * @param *Position doorOne
+ * @param *Position doorTwo
+ */
 void connectDoors(Position * doorOne, Position * doorTwo) {
   Position actual, previous;
   

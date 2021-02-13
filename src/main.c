@@ -7,6 +7,8 @@ int main() {
 
   int input = 0;
   Player * player = playerSetup(level->tiles);
+  drawUnit(level->tiles, player->position, 0, 0, player->symbol, player->color);
+  move(player->position->y, player->position->x);
 
   int monsterMove = 0;
   do {

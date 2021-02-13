@@ -14,6 +14,15 @@ Commands:
 
 */
 
+/**
+ * Executa os inputs devidos e retorna se o jogador 
+ * deveria se mover
+ *
+ * @param int input
+ * @param Player player
+ * @param **char tiles
+ * @returns boolean
+ */
 bool handleInput(int input, Player * player, char ** tiles) {
   int xOffset = 0;
   int yOffset = 0;

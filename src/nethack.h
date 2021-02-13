@@ -64,7 +64,7 @@ typedef struct Player {
 #define YELLOW 6
 #define PINK 7
 
-int screenSetup();
+bool screenSetup();
 void createBorders();
 void drawRoom(Room * room);
 void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol, int color);
@@ -79,12 +79,12 @@ Level * createLevel(int level);
 char ** saveLevelPositions();
 bool checkPosition(int xOffset, int yOffset, Position * position);
 
-Player * playerSetup(char ** tiles);
+Player * playerSetup();
 
 void addMonsters(Level * level);
 Monster * selectMonster(int level);
 Monster * createMonster(char name[20], char symbol, int stats[3], int color);
-void setStartingPosition(Monster * monster, Room * room, char ** tiles);
+void setStartingPosition(Monster * monster, Room * room);
 void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player, char ** tiles);
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);

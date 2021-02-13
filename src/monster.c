@@ -1,5 +1,10 @@
 #include "nethack.h"
 
+/**
+ * Adiciona os monstros baseado no level passado
+ *
+ * @param *Level level
+ */
 void addMonsters(Level * level) {
   level->monsters = malloc(sizeof(Monster *) * 6);
   level->numberOfMonsters = 0;
@@ -7,12 +12,20 @@ void addMonsters(Level * level) {
   for (int i = 0; i < level->numberOfRooms; i++) {
     if ((rand() % 2) == 0) {
       level->monsters[level->numberOfMonsters] = selectMonster(level->level);
-      setStartingPosition(level->monsters[level->numberOfMonsters], level->rooms[i], level->tiles);
+      setStartingPosition(level->monsters[level->numberOfMonsters], level->rooms[i]);
+      drawUnit(level->tiles, level->monsters[level->numberOfMonsters]->position, 0, 0,
+        level->monsters[level->numberOfMonsters]->symbol, level->monsters[level->numberOfMonsters]->color);
       level->numberOfMonsters++;
     }
   }
 }
 
+/**
+ * Retorna um monsto com a espécie e status baseado no level passado
+ *
+ * @param int level
+ * @returns *Monster
+ */
 Monster * selectMonster(int level) {
   int monsterSpecies;
   switch (level) {
@@ -81,6 +94,16 @@ Monster * selectMonster(int level) {
   }
 }
 
+/**
+ * Cria e retorna um monstro com as características baseadas nos 
+ * parâmetros passados
+ *
+ * @param char name[20]
+ * @param char symbol
+ * @param int stats[3]
+ * @param int color
+ * @returns *Monster
+ */
 Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
   Monster * newMonster = malloc(sizeof(Monster));
   
@@ -95,13 +118,27 @@ Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
   return newMonster;
 }
 
-void setStartingPosition(Monster * monster, Room * room, char ** tiles) {
+/**
+ * Inicializa uma posição válida para o monstro
+ *
+ * @param *Monster monster
+ * @param *Room room
+ */
+void setStartingPosition(Monster * monster, Room * room) {
   monster->position = malloc(sizeof(Position));
   monster->position->x = (rand() % (room->width - 2)) + room->position.x + 1;
   monster->position->y = (rand() % (room->height - 2)) + room->position.y + 1;
-  drawUnit(tiles, monster->position, 0, 0, monster->symbol, monster->color);
 }
 
+/**
+ * Move todos os monstros no level atual baseados se estão vagando ou 
+ * perseguindo o jogador
+ *
+ * @param **Monster monsters
+ * @param int numberOfMonsters
+ * @param *Player player
+ * @param **char tiles
+ */
 void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player, char ** tiles) {
   for (int i = 0; i < numberOfMonsters; i++) {
     Position offset;
@@ -119,6 +156,12 @@ void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player, ch
   }
 }
 
+/**
+ * Retorna um offset para a posição do monstro quando ele está vagando
+ *
+ * @param *Position monsterPosition
+ * @return *Position offset
+ */
 Position wander(Position * monterPosition) {
   Position offset;
   offset.x = (rand() % 3) - 1;
@@ -130,6 +173,13 @@ Position wander(Position * monterPosition) {
   return offset;
 }
 
+/**
+ * Retorna um offset para a posição do monstro quando ele está perseguindo o jogador
+ *
+ * @param *Position monsterPosition
+ * @param *Position destination
+ * @return *Position offset
+ */
 Position seek(Position * monsterPosition, Position * destination) {
   Position offset;
   offset.x = 0;
