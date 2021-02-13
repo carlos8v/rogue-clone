@@ -10,7 +10,7 @@ Monsters:
       attack: 1
       speed: 1
       defence: 1
-    pathfinding: 1 (random)
+    seeking: 1 (wander)
   
   2. Goblin:
     symbol: o
@@ -20,7 +20,7 @@ Monsters:
       attack: 3
       speed: 1
       defence: 1
-    pathfinding: 2 (seeking)
+    seeking: 2 (seeking)
 
   3. Troll
     symbol: T
@@ -30,7 +30,7 @@ Monsters:
       attack: 5
       speed: 1
       defence: 1
-    pathfinding: 1 (random)
+    seeking: 1 (wander)
 */
 
 void addMonsters(Level * level) {
@@ -98,14 +98,30 @@ void setStartingPosition(Monster * monster, Room * room, char ** tiles) {
 
 void moveMonsters(Level * level, Player * player) {
   for (int i = 0; i < level->numberOfMonsters; i++) {
+    Position offset;
     if (level->monsters[i]->seeking) {
-      Position offset = seek(level->monsters[i]->position, player->position);
+      offset = seek(level->monsters[i]->position, player->position);
       drawUnit(level->tiles, level->monsters[i]->position, offset.x, offset.y,
         level->monsters[i]->symbol, level->monsters[i]->color);
-      level->monsters[i]->position->x += offset.x;
-      level->monsters[i]->position->y += offset.y;
+    } else {
+      offset = wander(level->monsters[i]->position);
+      drawUnit(level->tiles, level->monsters[i]->position, offset.x, offset.y,
+        level->monsters[i]->symbol, level->monsters[i]->color);
     }
+    level->monsters[i]->position->x += offset.x;
+    level->monsters[i]->position->y += offset.y;
   }
+}
+
+Position wander(Position * monterPosition) {
+  Position offset;
+  offset.x = (rand() % 3) - 1;
+  offset.y = (rand() % 3) - 1;
+  if (!checkPosition(offset.x, offset.y, monterPosition)) {
+    offset.x = 0;
+    offset.y = 0;
+  }
+  return offset;
 }
 
 Position seek(Position * monsterPosition, Position * destination) {
@@ -113,27 +129,19 @@ Position seek(Position * monsterPosition, Position * destination) {
   offset.x = 0;
   offset.y = 0;
   if ((abs((monsterPosition->y - 1) - destination->y) < abs(monsterPosition->y - destination->y))
-    && ((mvinch(monsterPosition->y - 1, monsterPosition->x) == '.')
-    || (mvinch(monsterPosition->y - 1, monsterPosition->x) == '#')
-    || (mvinch(monsterPosition->y - 1, monsterPosition->x) == '+'))) {
+    && checkPosition(0, -1, monsterPosition)) {
     offset.y -= 1;
   }
   else if ((abs((monsterPosition->x + 1) - destination->x) < abs(monsterPosition->x - destination->x))
-    && ((mvinch(monsterPosition->y, monsterPosition->x + 1) == '.')
-    || (mvinch(monsterPosition->y, monsterPosition->x + 1) == '#')
-    || (mvinch(monsterPosition->y, monsterPosition->x + 1) == '+'))) {
+    && checkPosition(1, 0, monsterPosition)) {
     offset.x += 1;
   }
   else if ((abs((monsterPosition->y + 1) - destination->y) < abs(monsterPosition->y - destination->y)) 
-    && ((mvinch(monsterPosition->y + 1, monsterPosition->x) == '.')
-    || (mvinch(monsterPosition->y + 1, monsterPosition->x) == '#')
-    || (mvinch(monsterPosition->y + 1, monsterPosition->x) == '+'))){
+    && checkPosition(0, 1, monsterPosition)) {
     offset.y += 1;
   }
   else if ((abs((monsterPosition->x - 1) - destination->x) < abs(monsterPosition->x - destination->x))
-    && ((mvinch(monsterPosition->y, monsterPosition->x - 1) == '.')
-    || (mvinch(monsterPosition->y, monsterPosition->x - 1) == '#')
-    || (mvinch(monsterPosition->y, monsterPosition->x - 1) == '+'))) {
+    && checkPosition(-1, 0, monsterPosition)) {
     offset.x -= 1;
   }
   return offset;

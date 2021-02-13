@@ -75,6 +75,7 @@ Monster * createMonster(char symbol, int health, int attack, int defence, int se
 void setStartingPosition(Monster * monster, Room * room, char ** tiles);
 void moveMonsters(Level * level, Player * player);
 Position seek(Position * monsterPosition, Position * destination);
+Position wander(Position * monsterPosition);
 
 Room ** roomsSetup();
 Room * createRoom(int x, int y, int height, int width);
