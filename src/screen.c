@@ -126,22 +126,21 @@ void drawRoom(Room * room) {
  * Printa na tela o layout do mapa
  * @param Level* level
  */
-void drawLevel(Dungeon * dungeon) {
+void drawLevel(Level * level, Player * player) {
   for (int j = 0; j <= SCREEN_HEIGHT; j++) {
     for (int i = 0; i <= SCREEN_WIDTH; i++) {
-      mvprintw(j, i, "%c", dungeon->levels[dungeon->currentLevel]->tiles[j][i]);
+      mvprintw(j, i, "%c", level->tiles[j][i]);
     }
   }
 
-  for (int i = 0; i < dungeon->levels[dungeon->currentLevel]->numberOfMonsters; i++) {
-    drawUnit(
-      dungeon->levels[dungeon->currentLevel]->monsters[i]->position,
-      dungeon->levels[dungeon->currentLevel]->monsters[i]->symbol,
-      dungeon->levels[dungeon->currentLevel]->monsters[i]->color
-    );
+  for (int i = 0; i < level->numberOfMonsters; i++) {
+    if (level->monsters[i]->stats->health <= 0)
+      drawUnit(level->monsters[i]->position, '%', WHITE);
+    else
+      drawUnit(level->monsters[i]->position, level->monsters[i]->symbol, level->monsters[i]->color);
   }
 
-  drawUnit(dungeon->player->position, dungeon->player->symbol, dungeon->player->color);
+  drawUnit(player->position, player->symbol, player->color);
 }
 
 /**

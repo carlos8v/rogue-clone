@@ -13,6 +13,9 @@ void addMonsters(Level * level) {
     if ((rand() % 2) == 0) {
       level->monsters[level->numberOfMonsters] = selectMonster(level->level);
       setStartingPosition(level->monsters[level->numberOfMonsters], level->rooms[i]);
+      changeUnitsMap(level, level->monsters[level->numberOfMonsters]->position,
+        0, 0, level->monsters[level->numberOfMonsters]->symbol
+      );
       drawUnit(level->monsters[level->numberOfMonsters]->position,
         level->monsters[level->numberOfMonsters]->symbol,
         level->monsters[level->numberOfMonsters]->color
@@ -60,14 +63,14 @@ Monster * selectMonster(int level) {
   int monstersStats[3][3][4] = {
     {
     // HP, Atk, Def, Vision
-      { 2, 1, 1, 3 }, // Spider
-      { 3, 2, 2, 4 }, // Giant Spider
-      { 3, 3, 2, 4 }  // Scorpion
+      { 5, 1, 1, 3 }, // Spider
+      { 6, 2, 2, 4 }, // Giant Spider
+      { 6, 3, 2, 4 }  // Scorpion
     },
     {
-      { 4, 3, 1, 6 }, // Goblin
-      { 5, 4, 2, 7 }, // Hobgoblin
-      { 6, 4, 4, 8 }  // Orc
+      { 4, 3, 3, 6 }, // Goblin
+      { 5, 4, 4, 7 }, // Hobgoblin
+      { 6, 4, 6, 8 }  // Orc
     },
     {
       { 15, 5, 4, 7 }, // Troll
@@ -146,7 +149,7 @@ void setStartingPosition(Monster * monster, Room * room) {
  */
 void moveMonsters(Level * level, Monster ** monsters, int numberOfMonsters, Player * player) {
   for (int i = 0; i < numberOfMonsters; i++) {
-
+    if (monsters[i]->stats->health <= 0) continue;
     monsters[i]->seeking = shouldSeek(monsters[i]->position, player->position, monsters[i]->stats->vision);
 
     Position offset;
@@ -155,7 +158,8 @@ void moveMonsters(Level * level, Monster ** monsters, int numberOfMonsters, Play
     else
       offset = wander(monsters[i]->position);
 
-    if (checkUnits(level, monsters[i]->position, offset.x, offset.y)) {
+    if (checkUnits(level, monsters[i]->position, offset) == FLOOR) {
+      changeUnitsMap(level, monsters[i]->position, offset.x, offset.y, level->monsters[i]->symbol);
       monsters[i]->position->x += offset.x;
       monsters[i]->position->y += offset.y;
     }

@@ -18,13 +18,15 @@ Level * createLevel(int level) {
 }
 
 /**
- * Checa no unitsMap se não existe um jogador ou monstro na posição
+ * Checa no unitsMap se existe chão, jogador, monstro ou item na posição passada
  * @param Level* level
- * @returns boolean
+ * @param Position* position
+ * @param Position offset
+ * @returns int
  */
-bool checkUnits(Level * level, Position * position, int xOffset, int yOffset) {
-  if (level->unitsMap[position->y + yOffset][position->x + xOffset] == '.') return true;
-  return false;
+int checkUnits(Level * level, Position * position, Position offset) {
+  if (level->unitsMap[position->y + offset.y][position->x + offset.x] == '.') return FLOOR;
+  return MONSTER;
 }
 
 /**
@@ -32,12 +34,13 @@ bool checkUnits(Level * level, Position * position, int xOffset, int yOffset) {
  *
  * @param Position* position
  * @param int xOffset
- * @param int yOfsset
+ * @param int yOffset
  * @returns boolean
  */
 bool checkPosition(Position * position, int xOffset, int yOffset) {
   char target;
   switch (target = mvinch(position->y + yOffset, position->x + xOffset)) {
+    case '%':
     case '+':
     case '#':
     case '.':

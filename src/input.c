@@ -23,26 +23,34 @@ Commands:
  * @returns boolean
  */
 bool handleInput(int input, Player * player, Level * level) {
-  int xOffset = 0;
-  int yOffset = 0;
+  Position offset;
+  offset.x = 0;
+  offset.y = 0;
   bool shouldMove = false;
   switch(input) {
     case '1': case '2': case '3': case '4':
     case '6': case '7': case '8': case '9': case 'w':
     case 'a': case 's': case 'd': case KEY_UP: case KEY_LEFT:
     case KEY_RIGHT: case KEY_DOWN:
-      if (input == 'w' || input == '8') yOffset = -1;
-      else if (input == 'a' || input == '4') xOffset = -1;
-      else if (input == 's' || input == '2') yOffset = 1;
-      else if (input == 'd' || input == '6') xOffset = 1;
-      else if (input == '1' || input == KEY_LEFT) { xOffset = -1; yOffset = 1; }
-      else if (input == '3' || input == KEY_DOWN) { xOffset = 1; yOffset = 1; }
-      else if (input == '7' || input == KEY_UP) { xOffset = -1; yOffset = -1; }
-      else if (input == '9' || input == KEY_RIGHT) { xOffset = 1; yOffset = -1; }
-      if (checkPosition(player->position, xOffset, yOffset)) {
-        changeUnitsMap(level, player->position, xOffset, yOffset, player->symbol);
-        player->position->x += xOffset;
-        player->position->y += yOffset;
+      if (input == 'w' || input == '8') offset.y = -1;
+      else if (input == 'a' || input == '4') offset.x = -1;
+      else if (input == 's' || input == '2') offset.y = 1;
+      else if (input == 'd' || input == '6') offset.x = 1;
+      else if (input == '1' || input == KEY_LEFT) { offset.x = -1; offset.y = 1; }
+      else if (input == '3' || input == KEY_DOWN) { offset.x = 1; offset.y = 1; }
+      else if (input == '7' || input == KEY_UP) { offset.x = -1; offset.y = -1; }
+      else if (input == '9' || input == KEY_RIGHT) { offset.x = 1; offset.y = -1; }
+      if (checkUnits(level, player->position, offset) == MONSTER) {
+        Position enemyPosition;
+        enemyPosition.x = player->position->x + offset.x;
+        enemyPosition.y = player->position->y + offset.y;
+        attack(level, player->stats, enemyPosition, MONSTER);
+        shouldMove = true;
+      }
+      else if (checkPosition(player->position, offset.x, offset.y)) {
+        changeUnitsMap(level, player->position, offset.x, offset.y, player->symbol);
+        player->position->x += offset.x;
+        player->position->y += offset.y;
         shouldMove = true;
       }
       break;

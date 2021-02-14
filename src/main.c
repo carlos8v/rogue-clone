@@ -5,7 +5,7 @@ int main() {
 
   Dungeon * dungeon = dungeonSetup();
 
-  drawLevel(dungeon);
+  drawLevel(dungeon->levels[0], dungeon->player);
   move(dungeon->player->position->y, dungeon->player->position->x);
 
   int input = 0;
@@ -22,7 +22,7 @@ int main() {
         );
         monsterMove = 0;
       }
-      drawLevel(dungeon);
+      drawLevel(dungeon->levels[dungeon->currentLevel], dungeon->player);
       move(dungeon->player->position->y, dungeon->player->position->x); 
     }
   } while ((input = getch()) != 'Q');

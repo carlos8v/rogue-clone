@@ -77,10 +77,12 @@ typedef struct Dungeon {
 #define SCREEN_WIDTH 79
 #define SCREEN_HEIGHT 19
 
+enum TILE { FLOOR, PLAYER, MONSTER, ITEM };
+
 bool screenSetup();
 void createBorders();
 void drawRoom(Room * room);
-void drawLevel(Dungeon * dungeon);
+void drawLevel(Level * level, Player * player);
 void drawUnit(Position * position, char symbol, int color);
 
 void debug(char input, Player * player);
@@ -95,7 +97,7 @@ Level * createLevel(int level);
 char ** saveTiles();
 char ** initializeUnitsMap();
 void changeUnitsMap(Level * level, Position * position, int xOffset, int yOffset, char symbol);
-bool checkUnits(Level * level, Position * position, int xOffset, int yOffset);
+int checkUnits(Level * level, Position * position, Position offset);
 bool checkPosition(Position * position, int xOffset, int yOffset);
 
 Player * playerSetup();
@@ -109,6 +111,8 @@ void moveMonsters(Level * level, Monster ** monsters, int numberOfMonsters, Play
 bool shouldSeek(Position * initial, Position * final, int maxDistance);
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);
+
+void attack(Level * level, Stats * unit, Position enemyPosition, int enemyType);
 
 Room ** roomsSetup();
 Room * createRoom(int x, int y, int height, int width);
