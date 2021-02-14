@@ -37,7 +37,7 @@ typedef struct Monster {
   char name[20];
   char symbol;
   bool seeking;
-  Stats stats;
+  Stats * stats;
   int color;
   Position * position;
 } Monster;
@@ -55,8 +55,15 @@ typedef struct Player {
   Position * position;
   char symbol;
   int color;
-  Stats stats;
+  Stats * stats;
 } Player;
+
+typedef struct Dungeon {
+  int currentLevel;
+  int numberOfLevels;
+  Player * player;
+  Level ** levels;
+} Dungeon;
 
 #define WHITE 1
 #define GREEN 2
@@ -66,20 +73,26 @@ typedef struct Player {
 #define YELLOW 6
 #define PINK 7
 
+#define SCREEN_WIDTH 79
+#define SCREEN_HEIGHT 19
+
 bool screenSetup();
 void createBorders();
 void drawRoom(Room * room);
-void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol, int color);
+void drawLevel(Level * level);
+void drawUnit(Position * position, char symbol, int color);
 
 void debug(char input, Player * player);
 void printColors();
 
-bool handleInput(int input, Player * player, char ** tiles);
+bool handleInput(int input, Player * player);
+
+Dungeon * dungeonSetup();
 
 Level * createLevel(int level);
 
 char ** saveLevelPositions();
-bool checkPosition(int xOffset, int yOffset, Position * position);
+bool checkPosition(Position * position, int xOffset, int yOffset);
 
 Player * playerSetup();
 
@@ -88,7 +101,7 @@ Monster * selectMonster(int level);
 Monster * createMonster(char name[20], char symbol, int stats[4], int color);
 void setStartingPosition(Monster * monster, Room * room);
 
-void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player, char ** tiles);
+void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player);
 bool shouldSeek(Position * initial, Position * final, int maxDistance);
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);

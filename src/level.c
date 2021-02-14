@@ -19,12 +19,12 @@ Level * createLevel(int level) {
 /**
  * Checa no level atual se a posição passada é caminhável
  *
+ * @param *Position position
  * @param int xOffset
  * @param int yOfsset
- * @param *Position position
  * @returns boolean
  */
-bool checkPosition(int xOffset, int yOffset, Position * position) {
+bool checkPosition(Position * position, int xOffset, int yOffset) {
   char target;
   switch (target = mvinch(position->y + yOffset, position->x + xOffset)) {
     case '+':
@@ -43,10 +43,10 @@ bool checkPosition(int xOffset, int yOffset, Position * position) {
  * @returns **char
  */
 char ** saveLevelPositions() {
-  char ** level = malloc(sizeof(char *) * 30);
-  for (int j = 0; j < 30; j++) {
-    level[j] = malloc(sizeof(char) * 100);
-    for (int i = 0; i < 100; i++) {
+  char ** level = malloc(sizeof(char *) * (SCREEN_HEIGHT + 1));
+  for (int j = 0; j <= SCREEN_HEIGHT; j++) {
+    level[j] = malloc(sizeof(char) * (SCREEN_WIDTH + 1));
+    for (int i = 0; i <= SCREEN_WIDTH; i++) {
       level[j][i] = mvinch(j, i);
     }
   }

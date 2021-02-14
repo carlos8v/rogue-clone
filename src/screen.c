@@ -123,19 +123,29 @@ void drawRoom(Room * room) {
 }
 
 /**
- * Printa na tela o caractére antigo do level e a unidade (jogador ou monstro)
- * em sua nova posição baseada no xOffset e yOffset
+ * Printa na tela o layout do mapa
+ */
+void drawLevel(Level * level) {
+  for (int j = 0; j <= SCREEN_HEIGHT; j++) {
+    for (int i = 0; i <= SCREEN_WIDTH; i++) {
+      mvprintw(j, i, "%c", level->tiles[j][i]);
+    }
+  }
+
+  for (int i = 0; i < level->numberOfMonsters; i++) {
+    drawUnit(level->monsters[i]->position, level->monsters[i]->symbol, level->monsters[i]->color);
+  }
+}
+
+/**
+ * Printa na tela o caractére do personagem (Jogador ou monstro)
  * 
- * @param **char tiles
  * @param *Position position
- * @param int xOffset
- * @param int yOffset
  * @param char symbol
  * @param int color
  */
-void drawUnit(char ** tiles, Position * position, int xOffset, int yOffset, char symbol, int color) {
-  mvprintw(position->y, position->x, "%c", tiles[position->y][position->x]);
+void drawUnit(Position * position, char symbol, int color) {
   attron(COLOR_PAIR(color));
-  mvprintw(position->y + yOffset, position->x + xOffset, "%c", symbol);
+  mvprintw(position->y, position->x, "%c", symbol);
   attroff(COLOR_PAIR(color));
 }

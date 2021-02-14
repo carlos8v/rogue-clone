@@ -3,21 +3,28 @@
 int main() {
   if (!screenSetup()) return 0;
 
-  Level * level = createLevel(1);
+  Dungeon * dungeon = dungeonSetup();
+  
+  drawLevel(dungeon->levels[dungeon->currentLevel]);
+  drawUnit(dungeon->player->position, dungeon->player->symbol, dungeon->player->color);
+  move(dungeon->player->position->y, dungeon->player->position->x);
 
   int input = 0;
-  Player * player = playerSetup(level->tiles);
-  drawUnit(level->tiles, player->position, 0, 0, player->symbol, player->color);
-  move(player->position->y, player->position->x);
-
   int monsterMove = 0;
+
   do {
-    if (handleInput(input, player, level->tiles)) {
+    if (handleInput(input, dungeon->player)) {
       if (++monsterMove > 1) {
-        moveMonsters(level->monsters, level->numberOfMonsters, player, level->tiles);
+        moveMonsters(
+          dungeon->levels[dungeon->currentLevel]->monsters,
+          dungeon->levels[dungeon->currentLevel]->numberOfMonsters,
+          dungeon->player
+        );
         monsterMove = 0;
       }
-      move(player->position->y, player->position->x);
+      drawLevel(dungeon->levels[dungeon->currentLevel]);
+      drawUnit(dungeon->player->position, dungeon->player->symbol, dungeon->player->color);
+      move(dungeon->player->position->y, dungeon->player->position->x); 
     }
   } while ((input = getch()) != 'Q');
 

@@ -15,15 +15,13 @@ Commands:
 */
 
 /**
- * Executa os inputs devidos e retorna se o jogador 
- * deveria se mover
+ * Executa os inputs devidos e retorna se o jogador deveria se mover
  *
  * @param int input
  * @param Player player
- * @param **char tiles
  * @returns boolean
  */
-bool handleInput(int input, Player * player, char ** tiles) {
+bool handleInput(int input, Player * player) {
   int xOffset = 0;
   int yOffset = 0;
   bool shouldMove = false;
@@ -40,8 +38,7 @@ bool handleInput(int input, Player * player, char ** tiles) {
       else if (input == '3' || input == KEY_DOWN) { xOffset = 1; yOffset = 1; }
       else if (input == '7' || input == KEY_UP) { xOffset = -1; yOffset = -1; }
       else if (input == '9' || input == KEY_RIGHT) { xOffset = 1; yOffset = -1; }
-      if (checkPosition(xOffset, yOffset, player->position)) {
-        drawUnit(tiles, player->position, xOffset, yOffset, player->symbol, player->color);
+      if (checkPosition(player->position, xOffset, yOffset)) {
         player->position->x += xOffset;
         player->position->y += yOffset;
         shouldMove = true;

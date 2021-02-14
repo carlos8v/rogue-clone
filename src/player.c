@@ -14,10 +14,11 @@ Player * playerSetup() {
   newPlayer->symbol = '@';
   newPlayer->color = 6;
 
-  newPlayer->stats.health = 10;
-  newPlayer->stats.attack = 5;
-  newPlayer->stats.defence = 5;
-  newPlayer->stats.vision = 5;
+  newPlayer->stats = malloc(sizeof(Stats));
+  newPlayer->stats->health = 10;
+  newPlayer->stats->attack = 5;
+  newPlayer->stats->defence = 5;
+  newPlayer->stats->vision = 5;
   
   return newPlayer;
 }

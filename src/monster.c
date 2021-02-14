@@ -13,8 +13,10 @@ void addMonsters(Level * level) {
     if ((rand() % 2) == 0) {
       level->monsters[level->numberOfMonsters] = selectMonster(level->level);
       setStartingPosition(level->monsters[level->numberOfMonsters], level->rooms[i]);
-      drawUnit(level->tiles, level->monsters[level->numberOfMonsters]->position, 0, 0,
-        level->monsters[level->numberOfMonsters]->symbol, level->monsters[level->numberOfMonsters]->color);
+      drawUnit(level->monsters[level->numberOfMonsters]->position,
+        level->monsters[level->numberOfMonsters]->symbol,
+        level->monsters[level->numberOfMonsters]->color
+      );
       level->numberOfMonsters++;
     }
   }
@@ -110,10 +112,12 @@ Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
   strcpy(newMonster->name, name);
   newMonster->symbol = symbol;
   newMonster->color = color;
-  newMonster->stats.health = stats[0];
-  newMonster->stats.attack = stats[1];
-  newMonster->stats.defence = stats[2];
-  newMonster->stats.vision = stats[3];
+
+  newMonster->stats = malloc(sizeof(Stats));
+  newMonster->stats->health = stats[0];
+  newMonster->stats->attack = stats[1];
+  newMonster->stats->defence = stats[2];
+  newMonster->stats->vision = stats[3];
   newMonster->seeking = false;
 
   return newMonster;
@@ -138,23 +142,18 @@ void setStartingPosition(Monster * monster, Room * room) {
  * @param **Monster monsters
  * @param int numberOfMonsters
  * @param *Player player
- * @param **char tiles
  */
-void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player, char ** tiles) {
+void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player) {
   for (int i = 0; i < numberOfMonsters; i++) {
 
-    monsters[i]->seeking = shouldSeek(monsters[i]->position, player->position, monsters[i]->stats.vision);
+    monsters[i]->seeking = shouldSeek(monsters[i]->position, player->position, monsters[i]->stats->vision);
 
     Position offset;
-    if (monsters[i]->seeking) {
+    if (monsters[i]->seeking)
       offset = seek(monsters[i]->position, player->position);
-      drawUnit(tiles, monsters[i]->position, offset.x, offset.y,
-        monsters[i]->symbol, monsters[i]->color);
-    } else {
+    else
       offset = wander(monsters[i]->position);
-      drawUnit(tiles, monsters[i]->position, offset.x, offset.y,
-        monsters[i]->symbol, monsters[i]->color);
-    }
+
     monsters[i]->position->x += offset.x;
     monsters[i]->position->y += offset.y;
   }
@@ -184,7 +183,7 @@ Position wander(Position * monterPosition) {
   Position offset;
   offset.x = (rand() % 3) - 1;
   offset.y = (rand() % 3) - 1;
-  if (!checkPosition(offset.x, offset.y, monterPosition)) {
+  if (!checkPosition(monterPosition, offset.x, offset.y)) {
     offset.x = 0;
     offset.y = 0;
   }
@@ -203,19 +202,19 @@ Position seek(Position * monsterPosition, Position * destination) {
   offset.x = 0;
   offset.y = 0;
   if ((abs((monsterPosition->y - 1) - destination->y) < abs(monsterPosition->y - destination->y))
-    && checkPosition(0, -1, monsterPosition)) {
+    && checkPosition(monsterPosition, 0, -1)) {
     offset.y -= 1;
   }
   else if ((abs((monsterPosition->x + 1) - destination->x) < abs(monsterPosition->x - destination->x))
-    && checkPosition(1, 0, monsterPosition)) {
+    && checkPosition(monsterPosition, 1, 0)) {
     offset.x += 1;
   }
   else if ((abs((monsterPosition->y + 1) - destination->y) < abs(monsterPosition->y - destination->y)) 
-    && checkPosition(0, 1, monsterPosition)) {
+    && checkPosition(monsterPosition, 0, 1)) {
     offset.y += 1;
   }
   else if ((abs((monsterPosition->x - 1) - destination->x) < abs(monsterPosition->x - destination->x))
-    && checkPosition(-1, 0, monsterPosition)) {
+    && checkPosition(monsterPosition, -1, 0)) {
     offset.x -= 1;
   }
   return offset;
