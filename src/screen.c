@@ -51,7 +51,7 @@ void printColors() {
 
 /**
  * Inicializa as configurações iniciais da tela
- * @return bool
+ * @returns bool
  */
 bool screenSetup() {
   initscr();
@@ -100,7 +100,7 @@ bool screenSetup() {
 
 /**
  * Printa na tela os caractéries corretos da sala
- * @param *Room room
+ * @param Room* room
  */
 void drawRoom(Room * room) {
   int i, j;
@@ -124,23 +124,30 @@ void drawRoom(Room * room) {
 
 /**
  * Printa na tela o layout do mapa
+ * @param Level* level
  */
-void drawLevel(Level * level) {
+void drawLevel(Dungeon * dungeon) {
   for (int j = 0; j <= SCREEN_HEIGHT; j++) {
     for (int i = 0; i <= SCREEN_WIDTH; i++) {
-      mvprintw(j, i, "%c", level->tiles[j][i]);
+      mvprintw(j, i, "%c", dungeon->levels[dungeon->currentLevel]->tiles[j][i]);
     }
   }
 
-  for (int i = 0; i < level->numberOfMonsters; i++) {
-    drawUnit(level->monsters[i]->position, level->monsters[i]->symbol, level->monsters[i]->color);
+  for (int i = 0; i < dungeon->levels[dungeon->currentLevel]->numberOfMonsters; i++) {
+    drawUnit(
+      dungeon->levels[dungeon->currentLevel]->monsters[i]->position,
+      dungeon->levels[dungeon->currentLevel]->monsters[i]->symbol,
+      dungeon->levels[dungeon->currentLevel]->monsters[i]->color
+    );
   }
+
+  drawUnit(dungeon->player->position, dungeon->player->symbol, dungeon->player->color);
 }
 
 /**
  * Printa na tela o caractére do personagem (Jogador ou monstro)
  * 
- * @param *Position position
+ * @param Position* position
  * @param char symbol
  * @param int color
  */

@@ -4,22 +4,33 @@
  * Retorna uma nova instância da struct Level
  *
  * @param int level
- * @returns Level
+ * @returns Level*
  */
 Level * createLevel(int level) {
   Level *  newLevel = malloc(sizeof(Level));
   newLevel->level = level;
   newLevel->numberOfRooms = 3;
   newLevel->rooms = roomsSetup();
-  newLevel->tiles = saveLevelPositions();
+  newLevel->tiles = saveTiles();
+  newLevel->unitsMap = initializeUnitsMap();
   addMonsters(newLevel);
   return newLevel;
 }
 
 /**
+ * Checa no unitsMap se não existe um jogador ou monstro na posição
+ * @param Level* level
+ * @returns boolean
+ */
+bool checkUnits(Level * level, Position * position, int xOffset, int yOffset) {
+  if (level->unitsMap[position->y + yOffset][position->x + xOffset] == '.') return true;
+  return false;
+}
+
+/**
  * Checa no level atual se a posição passada é caminhável
  *
- * @param *Position position
+ * @param Position* position
  * @param int xOffset
  * @param int yOfsset
  * @returns boolean
@@ -37,12 +48,12 @@ bool checkPosition(Position * position, int xOffset, int yOffset) {
 }
 
 /**
- * Retorna um array com todos os caractéries presentes 
+ * Retorna um array com todos os caractéres presentes 
  * no level atual, ignorando items ou monstros
  *
- * @returns **char
+ * @returns char**
  */
-char ** saveLevelPositions() {
+char ** saveTiles() {
   char ** level = malloc(sizeof(char *) * (SCREEN_HEIGHT + 1));
   for (int j = 0; j <= SCREEN_HEIGHT; j++) {
     level[j] = malloc(sizeof(char) * (SCREEN_WIDTH + 1));
@@ -51,4 +62,33 @@ char ** saveLevelPositions() {
     }
   }
   return level;
+}
+
+/**
+ * Atualiza a informação do UnitsMap
+ * @param Level* level
+ * @param Position* position
+ * @param int xOffset
+ * @param int yOffset
+ * @param char symbol
+ */
+void changeUnitsMap(Level * level, Position * position, int xOffset, int yOffset, char symbol) {
+  level->unitsMap[position->y][position->x] = '.';
+  level->unitsMap[position->y + yOffset][position->x + xOffset] = symbol;
+}
+
+/**
+ * Retorna um array para verificação dos caractéres do personagem e monstros
+ *
+ * @returns char**
+ */
+char ** initializeUnitsMap() {
+  char ** units = malloc(sizeof(char*) * (SCREEN_HEIGHT + 1));
+  for (int j = 0; j <= SCREEN_HEIGHT; j++) {
+    units[j] = malloc(sizeof(char) * (SCREEN_WIDTH + 1));
+    for (int i = 0; i <= SCREEN_WIDTH; i++) {
+      units[j][i] = '.';
+    }
+  }
+  return units;
 }

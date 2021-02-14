@@ -3,7 +3,7 @@
 /**
  * Retorna uma nova instância da struct Player
  *
- * @returns Player
+ * @returns Player*
  */
 Player * playerSetup() {
   Player * newPlayer = malloc(sizeof(Player));

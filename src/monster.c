@@ -3,7 +3,7 @@
 /**
  * Adiciona os monstros baseado no level passado
  *
- * @param *Level level
+ * @param Level* level
  */
 void addMonsters(Level * level) {
   level->monsters = malloc(sizeof(Monster *) * 6);
@@ -26,7 +26,7 @@ void addMonsters(Level * level) {
  * Retorna um monsto com a espécie e status baseado no level passado
  *
  * @param int level
- * @returns *Monster
+ * @returns Monster*
  */
 Monster * selectMonster(int level) {
   int monsterSpecies;
@@ -104,7 +104,7 @@ Monster * selectMonster(int level) {
  * @param char symbol
  * @param int stats[3]
  * @param int color
- * @returns *Monster
+ * @returns Monster*
  */
 Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
   Monster * newMonster = malloc(sizeof(Monster));
@@ -126,8 +126,8 @@ Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
 /**
  * Inicializa uma posição válida para o monstro
  *
- * @param *Monster monster
- * @param *Room room
+ * @param Monster* monster
+ * @param Room* room
  */
 void setStartingPosition(Monster * monster, Room * room) {
   monster->position = malloc(sizeof(Position));
@@ -139,11 +139,12 @@ void setStartingPosition(Monster * monster, Room * room) {
  * Move todos os monstros no level atual baseados se estão vagando ou 
  * perseguindo o jogador
  *
- * @param **Monster monsters
+ * @param Level* level
+ * @param Monster** monsters
  * @param int numberOfMonsters
- * @param *Player player
+ * @param Player* player
  */
-void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player) {
+void moveMonsters(Level * level, Monster ** monsters, int numberOfMonsters, Player * player) {
   for (int i = 0; i < numberOfMonsters; i++) {
 
     monsters[i]->seeking = shouldSeek(monsters[i]->position, player->position, monsters[i]->stats->vision);
@@ -154,18 +155,20 @@ void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player) {
     else
       offset = wander(monsters[i]->position);
 
-    monsters[i]->position->x += offset.x;
-    monsters[i]->position->y += offset.y;
+    if (checkUnits(level, monsters[i]->position, offset.x, offset.y)) {
+      monsters[i]->position->x += offset.x;
+      monsters[i]->position->y += offset.y;
+    }
   }
 }
 
 /**
  * Retorna se o jogador está no campo de visão do monstro 
  *
- * @param *Position initial
- * @param *Position final
+ * @param Position* initial
+ * @param Position* final
  * @param int maxDistance
- * @return bool
+ * @returns Boolean
  */
 bool shouldSeek(Position * initial, Position * final, int maxDistance) {
   double distance = sqrt(pow(final->x - initial->x, 2) + pow(final->y - initial->y, 2));
@@ -176,8 +179,8 @@ bool shouldSeek(Position * initial, Position * final, int maxDistance) {
 /**
  * Retorna um offset para a posição do monstro quando ele está vagando
  *
- * @param *Position monsterPosition
- * @return *Position offset
+ * @param Position* monsterPosition
+ * @returns Position* offset
  */
 Position wander(Position * monterPosition) {
   Position offset;
@@ -193,9 +196,9 @@ Position wander(Position * monterPosition) {
 /**
  * Retorna um offset para a posição do monstro quando ele está perseguindo o jogador
  *
- * @param *Position monsterPosition
- * @param *Position destination
- * @return *Position offset
+ * @param Position* monsterPosition
+ * @param Position* destination
+ * @returns Position* offset
  */
 Position seek(Position * monsterPosition, Position * destination) {
   Position offset;

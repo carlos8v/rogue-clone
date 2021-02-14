@@ -10,6 +10,7 @@
 typedef struct Level {
   int level;
   char ** tiles;
+  char ** unitsMap;
   
   int numberOfRooms;
   struct Room ** rooms;
@@ -79,19 +80,22 @@ typedef struct Dungeon {
 bool screenSetup();
 void createBorders();
 void drawRoom(Room * room);
-void drawLevel(Level * level);
+void drawLevel(Dungeon * dungeon);
 void drawUnit(Position * position, char symbol, int color);
 
 void debug(char input, Player * player);
 void printColors();
 
-bool handleInput(int input, Player * player);
+bool handleInput(int input, Player * player, Level * level);
 
 Dungeon * dungeonSetup();
 
 Level * createLevel(int level);
 
-char ** saveLevelPositions();
+char ** saveTiles();
+char ** initializeUnitsMap();
+void changeUnitsMap(Level * level, Position * position, int xOffset, int yOffset, char symbol);
+bool checkUnits(Level * level, Position * position, int xOffset, int yOffset);
 bool checkPosition(Position * position, int xOffset, int yOffset);
 
 Player * playerSetup();
@@ -101,7 +105,7 @@ Monster * selectMonster(int level);
 Monster * createMonster(char name[20], char symbol, int stats[4], int color);
 void setStartingPosition(Monster * monster, Room * room);
 
-void moveMonsters(Monster ** monsters, int numberOfMonsters, Player * player);
+void moveMonsters(Level * level, Monster ** monsters, int numberOfMonsters, Player * player);
 bool shouldSeek(Position * initial, Position * final, int maxDistance);
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);

@@ -1,5 +1,10 @@
 #include "nethack.h"
 
+/**
+ * Retorna uma nova instância da struct Dungeon
+ *
+ * @returns Dungeon*
+ */
 Dungeon * dungeonSetup() {
   Dungeon * newDungeon = malloc(sizeof(Dungeon));
   newDungeon->currentLevel = 1;

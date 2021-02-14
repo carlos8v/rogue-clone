@@ -3,7 +3,7 @@
 /**
  * Cria a estrutura inicial de todas as salas do level atual
  *
- * @returns **Room
+ * @returns Room**
  */
 Room ** roomsSetup() {
   Room ** rooms = malloc(sizeof(Room) * 3);
@@ -25,7 +25,7 @@ Room ** roomsSetup() {
 /**
  * Retorna uma nova instância da struct Room
  *
- * @returns *Room
+ * @returns Room*
  */
 Room * createRoom(int x, int y, int height, int width) {
   Room * newRoom = malloc(sizeof(Room));
@@ -58,8 +58,8 @@ Room * createRoom(int x, int y, int height, int width) {
 /**
  * Cria corredores entre as duas portas passadas
  *
- * @param *Position doorOne
- * @param *Position doorTwo
+ * @param Position* doorOne
+ * @param Position* doorTwo
  */
 void connectDoors(Position * doorOne, Position * doorTwo) {
   Position actual, previous;

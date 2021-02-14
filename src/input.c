@@ -19,9 +19,10 @@ Commands:
  *
  * @param int input
  * @param Player player
+ * @param Level* level
  * @returns boolean
  */
-bool handleInput(int input, Player * player) {
+bool handleInput(int input, Player * player, Level * level) {
   int xOffset = 0;
   int yOffset = 0;
   bool shouldMove = false;
@@ -39,6 +40,7 @@ bool handleInput(int input, Player * player) {
       else if (input == '7' || input == KEY_UP) { xOffset = -1; yOffset = -1; }
       else if (input == '9' || input == KEY_RIGHT) { xOffset = 1; yOffset = -1; }
       if (checkPosition(player->position, xOffset, yOffset)) {
+        changeUnitsMap(level, player->position, xOffset, yOffset, player->symbol);
         player->position->x += xOffset;
         player->position->y += yOffset;
         shouldMove = true;
