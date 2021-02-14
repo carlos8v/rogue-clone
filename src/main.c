@@ -17,6 +17,7 @@ int main() {
         moveMonsters();
         monsterMove = 0;
       }
+      if (dungeon->player->stats->health <= 0) break;
       drawLevel();
       move(dungeon->player->position->y, dungeon->player->position->x); 
     }

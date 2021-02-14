@@ -109,7 +109,7 @@ Monster * createMonster(char name[20], char symbol, int stats[4], int color);
 void setStartingPosition(Monster * monster, Room * room);
 
 void moveMonsters();
-bool shouldSeek(Position * initial, Position * final, int maxDistance);
+bool isInRange(Position initial, Position final, int maxDistance);
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);
 

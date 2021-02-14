@@ -6,16 +6,19 @@
  * @param Level* level
  */
 void addMonsters(Level * level) {
-  level->monsters = malloc(sizeof(Monster *) * 6);
+  int maxMonsters = 6;
+  level->monsters = malloc(sizeof(Monster *) * maxMonsters);
   level->numberOfMonsters = 0;
   for (int i = 0; i < level->numberOfRooms; i++) {
+    if (level->numberOfMonsters >= maxMonsters) break;
     if ((rand() % 2) == 0) {
       level->monsters[level->numberOfMonsters] = selectMonster(level->level);
       setStartingPosition(level->monsters[level->numberOfMonsters], level->rooms[i]);
       changeUnitsMap(level->unitsMap, level->monsters[level->numberOfMonsters]->position,
         0, 0, level->monsters[level->numberOfMonsters]->symbol
       );
-      drawUnit(level->monsters[level->numberOfMonsters]->position,
+      drawUnit(
+        level->monsters[level->numberOfMonsters]->position,
         level->monsters[level->numberOfMonsters]->symbol,
         level->monsters[level->numberOfMonsters]->color
       );
@@ -62,19 +65,19 @@ Monster * selectMonster(int level) {
   int monstersStats[3][3][4] = {
     {
     // HP, Atk, Def, Vision
-      { 5, 1, 1, 3 }, // Spider
-      { 6, 2, 2, 4 }, // Giant Spider
-      { 6, 3, 2, 4 }  // Scorpion
+      { 5, 4, 1, 3 }, // Spider
+      { 6, 6, 2, 4 }, // Giant Spider
+      { 6, 7, 2, 4 }  // Scorpion
     },
     {
-      { 4, 3, 3, 6 }, // Goblin
-      { 5, 4, 4, 7 }, // Hobgoblin
-      { 6, 4, 4, 8 }  // Orc
+      { 4, 6, 3, 6 }, // Goblin
+      { 5, 7, 4, 7 }, // Hobgoblin
+      { 6, 8, 4, 8 }  // Orc
     },
     {
-      { 15, 5, 4, 7 }, // Troll
-      { 15, 5, 4, 7 }, // Ice Troll
-      { 15, 5, 4, 8 }  // Water Troll
+      { 15, 9, 4, 7 }, // Troll
+      { 15, 9, 4, 7 }, // Ice Troll
+      { 15, 9, 4, 8 }  // Water Troll
     }
   };
 
@@ -133,8 +136,10 @@ Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
  */
 void setStartingPosition(Monster * monster, Room * room) {
   monster->position = malloc(sizeof(Position));
-  monster->position->x = (rand() % (room->width - 2)) + room->position.x + 1;
-  monster->position->y = (rand() % (room->height - 2)) + room->position.y + 1;
+  do {
+    monster->position->x = (rand() % (room->width - 2)) + room->position.x + 1;
+    monster->position->y = (rand() % (room->height - 2)) + room->position.y + 1;
+  } while(checkPosition(monster->position, 0, 0) == false);
 }
 
 /**
@@ -148,7 +153,7 @@ void moveMonsters() {
 
   for (int i = 0; i < dungeon->levels[dungeon->currentLevel]->numberOfMonsters; i++) {
     if (monsters[i]->stats->health <= 0) continue;
-    monsters[i]->seeking = shouldSeek(monsters[i]->position, player->position, monsters[i]->stats->vision);
+    monsters[i]->seeking = isInRange(*monsters[i]->position, *player->position, monsters[i]->stats->vision);
 
     Position offset;
     if (monsters[i]->seeking)
@@ -161,6 +166,12 @@ void moveMonsters() {
       monsters[i]->position->x += offset.x;
       monsters[i]->position->y += offset.y;
     }
+    else if (checkUnits(monsters[i]->position, offset) == PLAYER) {
+      Position enemyPosition;
+      enemyPosition.x = monsters[i]->position->x + offset.x;
+      enemyPosition.y = monsters[i]->position->y + offset.y;
+      attack(monsters[i]->stats, enemyPosition, PLAYER);
+    }
   }
 }
 
@@ -172,8 +183,8 @@ void moveMonsters() {
  * @param int maxDistance
  * @returns Boolean
  */
-bool shouldSeek(Position * initial, Position * final, int maxDistance) {
-  double distance = sqrt(pow(final->x - initial->x, 2) + pow(final->y - initial->y, 2));
+bool isInRange(Position initial, Position final, int maxDistance) {
+  double distance = sqrt(pow(final.x - initial.x, 2) + pow((final.y - initial.y) * 2, 2));
   if (distance <= maxDistance) return true;
   return false;
 }

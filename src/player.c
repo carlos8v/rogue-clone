@@ -12,12 +12,12 @@ Player * playerSetup() {
   newPlayer->position->y = 15;
 
   newPlayer->symbol = '@';
-  newPlayer->color = 6;
+  newPlayer->color = YELLOW;
 
   newPlayer->stats = malloc(sizeof(Stats));
   newPlayer->stats->health = 10;
-  newPlayer->stats->attack = 5;
-  newPlayer->stats->defence = 5;
+  newPlayer->stats->attack = 10;
+  newPlayer->stats->defence = 3;
   newPlayer->stats->vision = 5;
   
   return newPlayer;

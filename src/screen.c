@@ -134,11 +134,32 @@ void drawLevel() {
 
   for (int j = 0; j <= SCREEN_HEIGHT; j++) {
     for (int i = 0; i <= SCREEN_WIDTH; i++) {
+      // Sistema de tocha
+
+      // Position position;
+      // position.x = i;
+      // position.y = j;
+
+      // if (isInRange(*player->position, position, player->stats->vision)) {
+      //   attron(COLOR_PAIR(ORANGE));
+      //   mvprintw(j, i, "%c", level->tiles[j][i]);
+      //   attroff(COLOR_PAIR(ORANGE));
+      // } else {
+      //   mvprintw(j, i, "%c", level->tiles[j][i]);
+      // }
       mvprintw(j, i, "%c", level->tiles[j][i]);
     }
   }
 
   for (int i = 0; i < level->numberOfMonsters; i++) {
+    // Sistema de tocha
+    // if (isInRange(*player->position, *level->monsters[i]->position, player->stats->vision)) {
+    //   if (level->monsters[i]->stats->health <= 0)
+    //     drawUnit(level->monsters[i]->position, '%', WHITE);
+    //   else
+    //     drawUnit(level->monsters[i]->position, level->monsters[i]->symbol, level->monsters[i]->color);
+    // }
+
     if (level->monsters[i]->stats->health <= 0)
       drawUnit(level->monsters[i]->position, '%', WHITE);
     else

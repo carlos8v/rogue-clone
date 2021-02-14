@@ -25,8 +25,11 @@ Level * createLevel(int level) {
  */
 int checkUnits(Position * position, Position offset) {
   char ** unitsMap = dungeon->levels[dungeon->currentLevel]->unitsMap;
-  if (unitsMap[position->y + offset.y][position->x + offset.x] == '.') return FLOOR;
-  return MONSTER;
+  switch(unitsMap[position->y + offset.y][position->x + offset.x]) {
+    case '.': return FLOOR;
+    case '@': return PLAYER;
+    default: return MONSTER;
+  }
 }
 
 /**
@@ -40,10 +43,8 @@ int checkUnits(Position * position, Position offset) {
 bool checkPosition(Position * position, int xOffset, int yOffset) {
   char target;
   switch (target = mvinch(position->y + yOffset, position->x + xOffset)) {
-    case '%':
-    case '+':
-    case '#':
-    case '.':
+    case '@': case '%': case '+':
+    case '#': case '.':
       return true;
     default:
       return false;
