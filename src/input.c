@@ -22,11 +22,14 @@ Commands:
  * @param Level* level
  * @returns boolean
  */
-bool handleInput(int input, Player * player, Level * level) {
+bool handleInput(int input) {
+  Player * player = dungeon->player;
   Position offset;
   offset.x = 0;
   offset.y = 0;
+
   bool shouldMove = false;
+
   switch(input) {
     case '1': case '2': case '3': case '4':
     case '6': case '7': case '8': case '9': case 'w':
@@ -40,15 +43,16 @@ bool handleInput(int input, Player * player, Level * level) {
       else if (input == '3' || input == KEY_DOWN) { offset.x = 1; offset.y = 1; }
       else if (input == '7' || input == KEY_UP) { offset.x = -1; offset.y = -1; }
       else if (input == '9' || input == KEY_RIGHT) { offset.x = 1; offset.y = -1; }
-      if (checkUnits(level, player->position, offset) == MONSTER) {
+      if (checkUnits(player->position, offset) == MONSTER) {
         Position enemyPosition;
         enemyPosition.x = player->position->x + offset.x;
         enemyPosition.y = player->position->y + offset.y;
-        attack(level, player->stats, enemyPosition, MONSTER);
+        attack(player->stats, enemyPosition, MONSTER);
         shouldMove = true;
       }
       else if (checkPosition(player->position, offset.x, offset.y)) {
-        changeUnitsMap(level, player->position, offset.x, offset.y, player->symbol);
+        char ** unitsMap = dungeon->levels[dungeon->currentLevel]->unitsMap;
+        changeUnitsMap(unitsMap, player->position, offset.x, offset.y, player->symbol);
         player->position->x += offset.x;
         player->position->y += offset.y;
         shouldMove = true;
@@ -65,6 +69,6 @@ bool handleInput(int input, Player * player, Level * level) {
       mvprintw(23, 0, "                              ");
       break;
   }
-  debug(input, player);
+  debug(input);
   return shouldMove;
 }

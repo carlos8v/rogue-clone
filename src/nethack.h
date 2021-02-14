@@ -78,17 +78,18 @@ typedef struct Dungeon {
 #define SCREEN_HEIGHT 19
 
 enum TILE { FLOOR, PLAYER, MONSTER, ITEM };
+Dungeon * dungeon;
 
 bool screenSetup();
 void createBorders();
 void drawRoom(Room * room);
-void drawLevel(Level * level, Player * player);
+void drawLevel();
 void drawUnit(Position * position, char symbol, int color);
 
-void debug(char input, Player * player);
+void debug(char input);
 void printColors();
 
-bool handleInput(int input, Player * player, Level * level);
+bool handleInput(int input);
 
 Dungeon * dungeonSetup();
 
@@ -96,8 +97,8 @@ Level * createLevel(int level);
 
 char ** saveTiles();
 char ** initializeUnitsMap();
-void changeUnitsMap(Level * level, Position * position, int xOffset, int yOffset, char symbol);
-int checkUnits(Level * level, Position * position, Position offset);
+void changeUnitsMap(char ** unitsMap, Position * position, int xOffset, int yOffset, char symbol);
+int checkUnits(Position * position, Position offset);
 bool checkPosition(Position * position, int xOffset, int yOffset);
 
 Player * playerSetup();
@@ -107,12 +108,12 @@ Monster * selectMonster(int level);
 Monster * createMonster(char name[20], char symbol, int stats[4], int color);
 void setStartingPosition(Monster * monster, Room * room);
 
-void moveMonsters(Level * level, Monster ** monsters, int numberOfMonsters, Player * player);
+void moveMonsters();
 bool shouldSeek(Position * initial, Position * final, int maxDistance);
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);
 
-void attack(Level * level, Stats * unit, Position enemyPosition, int enemyType);
+void attack(Stats * unit, Position enemyPosition, int enemyType);
 
 Room ** roomsSetup();
 Room * createRoom(int x, int y, int height, int width);

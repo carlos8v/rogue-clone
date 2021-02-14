@@ -8,12 +8,11 @@
 void addMonsters(Level * level) {
   level->monsters = malloc(sizeof(Monster *) * 6);
   level->numberOfMonsters = 0;
-
   for (int i = 0; i < level->numberOfRooms; i++) {
     if ((rand() % 2) == 0) {
       level->monsters[level->numberOfMonsters] = selectMonster(level->level);
       setStartingPosition(level->monsters[level->numberOfMonsters], level->rooms[i]);
-      changeUnitsMap(level, level->monsters[level->numberOfMonsters]->position,
+      changeUnitsMap(level->unitsMap, level->monsters[level->numberOfMonsters]->position,
         0, 0, level->monsters[level->numberOfMonsters]->symbol
       );
       drawUnit(level->monsters[level->numberOfMonsters]->position,
@@ -70,7 +69,7 @@ Monster * selectMonster(int level) {
     {
       { 4, 3, 3, 6 }, // Goblin
       { 5, 4, 4, 7 }, // Hobgoblin
-      { 6, 4, 6, 8 }  // Orc
+      { 6, 4, 4, 8 }  // Orc
     },
     {
       { 15, 5, 4, 7 }, // Troll
@@ -141,14 +140,13 @@ void setStartingPosition(Monster * monster, Room * room) {
 /**
  * Move todos os monstros no level atual baseados se estão vagando ou 
  * perseguindo o jogador
- *
- * @param Level* level
- * @param Monster** monsters
- * @param int numberOfMonsters
- * @param Player* player
  */
-void moveMonsters(Level * level, Monster ** monsters, int numberOfMonsters, Player * player) {
-  for (int i = 0; i < numberOfMonsters; i++) {
+void moveMonsters() {
+  Player * player = dungeon->player;
+  Monster ** monsters = dungeon->levels[dungeon->currentLevel]->monsters;
+  char ** unitsMap = dungeon->levels[dungeon->currentLevel]->unitsMap;
+
+  for (int i = 0; i < dungeon->levels[dungeon->currentLevel]->numberOfMonsters; i++) {
     if (monsters[i]->stats->health <= 0) continue;
     monsters[i]->seeking = shouldSeek(monsters[i]->position, player->position, monsters[i]->stats->vision);
 
@@ -158,8 +156,8 @@ void moveMonsters(Level * level, Monster ** monsters, int numberOfMonsters, Play
     else
       offset = wander(monsters[i]->position);
 
-    if (checkUnits(level, monsters[i]->position, offset) == FLOOR) {
-      changeUnitsMap(level, monsters[i]->position, offset.x, offset.y, level->monsters[i]->symbol);
+    if (checkUnits(monsters[i]->position, offset) == FLOOR) {
+      changeUnitsMap(unitsMap, monsters[i]->position, offset.x, offset.y, monsters[i]->symbol);
       monsters[i]->position->x += offset.x;
       monsters[i]->position->y += offset.y;
     }

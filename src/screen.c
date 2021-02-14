@@ -2,8 +2,11 @@
 
 /**
  * Printa na tela informações úteis para debugger
+ * 
+ * @param char input
  */
-void debug(char input, Player * player) {
+void debug(char input) {
+  Player * player = dungeon->player;
   mvprintw(21, 0, "Input: %c ", input);
   mvprintw(22, 0, "Player: %i, %i", player->position->x, player->position->y);
   move(player->position->y, player->position->x);
@@ -123,10 +126,12 @@ void drawRoom(Room * room) {
 }
 
 /**
- * Printa na tela o layout do mapa
- * @param Level* level
+ * Printa na tela o layout do mapa, os monstros e o jogador
  */
-void drawLevel(Level * level, Player * player) {
+void drawLevel() {
+  Level * level = dungeon->levels[dungeon->currentLevel];
+  Player * player = dungeon->player;
+
   for (int j = 0; j <= SCREEN_HEIGHT; j++) {
     for (int i = 0; i <= SCREEN_WIDTH; i++) {
       mvprintw(j, i, "%c", level->tiles[j][i]);

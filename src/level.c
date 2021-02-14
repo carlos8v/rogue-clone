@@ -19,13 +19,13 @@ Level * createLevel(int level) {
 
 /**
  * Checa no unitsMap se existe chão, jogador, monstro ou item na posição passada
- * @param Level* level
  * @param Position* position
  * @param Position offset
  * @returns int
  */
-int checkUnits(Level * level, Position * position, Position offset) {
-  if (level->unitsMap[position->y + offset.y][position->x + offset.x] == '.') return FLOOR;
+int checkUnits(Position * position, Position offset) {
+  char ** unitsMap = dungeon->levels[dungeon->currentLevel]->unitsMap;
+  if (unitsMap[position->y + offset.y][position->x + offset.x] == '.') return FLOOR;
   return MONSTER;
 }
 
@@ -69,15 +69,16 @@ char ** saveTiles() {
 
 /**
  * Atualiza a informação do UnitsMap
- * @param Level* level
+ * 
+ * @param char** tiles
  * @param Position* position
  * @param int xOffset
  * @param int yOffset
  * @param char symbol
  */
-void changeUnitsMap(Level * level, Position * position, int xOffset, int yOffset, char symbol) {
-  level->unitsMap[position->y][position->x] = '.';
-  level->unitsMap[position->y + yOffset][position->x + xOffset] = symbol;
+void changeUnitsMap(char ** unitsMap, Position * position, int xOffset, int yOffset, char symbol) {
+  unitsMap[position->y][position->x] = '.';
+  unitsMap[position->y + yOffset][position->x + xOffset] = symbol;
 }
 
 /**

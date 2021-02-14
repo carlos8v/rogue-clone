@@ -7,7 +7,7 @@
  */
 Dungeon * dungeonSetup() {
   Dungeon * newDungeon = malloc(sizeof(Dungeon));
-  newDungeon->currentLevel = 4;
+  newDungeon->currentLevel = 0;
   newDungeon->numberOfLevels = 6;
   newDungeon->player = playerSetup();
 
@@ -17,9 +17,7 @@ Dungeon * dungeonSetup() {
     newDungeon->levels[i] = createLevel(i + 1);
   }
 
-  changeUnitsMap(newDungeon->levels[0], newDungeon->player->position,
-    0, 0, newDungeon->player->symbol
-  );
+  changeUnitsMap(newDungeon->levels[0]->unitsMap, newDungeon->player->position, 0, 0, newDungeon->player->symbol);
 
   return newDungeon;
 }
