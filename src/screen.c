@@ -7,8 +7,8 @@
  */
 void debug(char input) {
   Player * player = dungeon->player;
-  mvprintw(21, 0, "Input: %c ", input);
-  mvprintw(22, 0, "Player: %i, %i", player->position->x, player->position->y);
+  mvprintw(22, 40, "Input: %c ", input);
+  mvprintw(23, 40, "Player: %i, %i", player->position->x, player->position->y);
   move(player->position->y, player->position->x);
 }
 
@@ -16,40 +16,29 @@ void debug(char input) {
  * Printa na tela todos os conjutos de cores
  */
 void printColors() {
-  attron(COLOR_PAIR(1));
-  mvprintw(0, 0, "Teste");
-  attron(COLOR_PAIR(2));
-  mvprintw(1, 0, "Teste");
-  attron(COLOR_PAIR(3));
-  mvprintw(2, 0, "Teste");
-  attron(COLOR_PAIR(4));
-  mvprintw(3, 0, "Teste");
-  attron(COLOR_PAIR(5));
-  mvprintw(4, 0, "Teste");
-  attron(COLOR_PAIR(6));
-  mvprintw(5, 0, "Teste");
-  attron(COLOR_PAIR(7));
-  mvprintw(6, 0, "Teste");
-
-  attron(COLOR_PAIR(1) | A_REVERSE);
-  mvprintw(0, 6, "Teste");
-  attron(COLOR_PAIR(2) | A_REVERSE);
-  mvprintw(1, 6, "Teste");
-  attron(COLOR_PAIR(3) | A_REVERSE);
-  mvprintw(2, 6, "Teste");
-  attron(COLOR_PAIR(4) | A_REVERSE);
-  mvprintw(3, 6, "Teste");
-  attron(COLOR_PAIR(5) | A_REVERSE);
-  mvprintw(4, 6, "Teste");
-  attron(COLOR_PAIR(6) | A_REVERSE);
-  mvprintw(5, 6, "Teste");
-  attron(COLOR_PAIR(7) | A_REVERSE);
-  mvprintw(6, 6, "Teste");
-  attroff(COLOR_PAIR(7) | A_REVERSE);
+  for (int j = 0; j < 4; j++) {
+    if (j == 1) attron(A_BOLD);
+    else if (j == 2) attron(A_REVERSE);
+    else if (j == 3) attron(A_REVERSE | A_BOLD);
+    for (int i = 0; i < 7; i++) {
+      attron(COLOR_PAIR(i + 1));
+      mvprintw(i, j * 5, "Test");
+      attroff(COLOR_PAIR(i + 1));
+    }
+    attroff(A_BOLD | A_REVERSE);
+  }
 
   refresh();
   wrefresh(stdscr);
   getch();
+}
+
+short * getColorFormat(int red, int green, int blue) {
+  short * color = malloc(sizeof(short) * 3);
+  color[0] = (red * 1000) / 255;
+  color[1] = (green * 1000) / 255;
+  color[2] = (blue * 1000) / 255;
+  return color;
 }
 
 /**
@@ -58,17 +47,17 @@ void printColors() {
  */
 bool screenSetup() {
   initscr();
-  start_color();
 
+  if (has_colors) start_color();
   if (can_change_color()) {
-    short bg_color[3] = { 156.862745098, 164.705882353, 211.764705882 };
-    short fg_color[3] = { 1000, 1000, 1000 };
-    short green_color[3] = { 313.725490196, 1000, 482.352941176 };
-    short cyan_color[3] = { 545.098039216, 913.725490196, 992.156862745 };
-    short orange_color[3] = { 1000, 721.568627451, 423.529411765 };
-    short red_color[3] = { 1000, 333.333333333, 333.333333333 };
-    short yellow_color[3] = { 945.098039216, 1000, 549.019607843 };
-    short pink_color[3] = { 1000, 474.509803922, 776.470588235 };
+    short * bg_color = getColorFormat(40, 42, 54);
+    short * fg_color = getColorFormat(255, 255, 255);
+    short * green_color = getColorFormat(80, 250, 123);
+    short * cyan_color = getColorFormat(139, 233, 253);
+    short * orange_color = getColorFormat(255, 164, 45);
+    short * red_color = getColorFormat(255, 85, 85);
+    short * yellow_color = getColorFormat(242, 208, 12);
+    short * pink_color = getColorFormat(255, 121, 198);
 
     init_color(0, bg_color[0], bg_color[1], bg_color[2]);
     init_color(1, green_color[0], green_color[1], green_color[2]);
@@ -79,6 +68,15 @@ bool screenSetup() {
     init_color(6, pink_color[0], pink_color[1], pink_color[2]);
     init_color(7, fg_color[0], fg_color[1], fg_color[2]);
 
+    init_color(8, bg_color[0], bg_color[1], bg_color[2]);
+    init_color(9, green_color[0], green_color[1], green_color[2]);
+    init_color(10, cyan_color[0], cyan_color[1], cyan_color[2]);
+    init_color(11, orange_color[0], orange_color[1], orange_color[2]);
+    init_color(12, red_color[0], red_color[1], red_color[2]);
+    init_color(13, yellow_color[0], yellow_color[1], yellow_color[2]);
+    init_color(14, pink_color[0], pink_color[1], pink_color[2]);
+    init_color(15, fg_color[0], fg_color[1], fg_color[2]);
+
     init_pair(WHITE, 7, 0);
     init_pair(GREEN, 1, 0);
     init_pair(CYAN, 2, 0);
@@ -86,6 +84,7 @@ bool screenSetup() {
     init_pair(RED, 4, 0);
     init_pair(YELLOW, 5, 0);
     init_pair(PINK, 6, 0);
+
     wattron(stdscr, COLOR_PAIR(1));
   } else {
     mvprintw(0, 0, "Seu terminal não aceita cores");
@@ -93,6 +92,8 @@ bool screenSetup() {
     endwin();
     return false;
   }
+
+  printColors();
 
   keypad(stdscr, TRUE);
   srand(time(NULL));
@@ -134,32 +135,28 @@ void drawLevel() {
 
   for (int j = 0; j <= SCREEN_HEIGHT; j++) {
     for (int i = 0; i <= SCREEN_WIDTH; i++) {
-      // Sistema de tocha
+      Position position;
+      position.x = i;
+      position.y = j;
 
-      // Position position;
-      // position.x = i;
-      // position.y = j;
+      int displayColor;
 
-      // if (isInRange(*player->position, position, player->stats->vision)) {
-      //   attron(COLOR_PAIR(ORANGE));
-      //   mvprintw(j, i, "%c", level->tiles[j][i]);
-      //   attroff(COLOR_PAIR(ORANGE));
-      // } else {
-      //   mvprintw(j, i, "%c", level->tiles[j][i]);
-      // }
+      switch(level->tiles[j][i]) {
+        case '+': displayColor = YELLOW; break;
+        default: displayColor = WHITE; break;
+      }
+
+      if (isInRange(*player->position, position, player->stats->vision, false, false)
+        && level->tiles[j][i] == '#')
+        displayColor = ORANGE;
+
+      attron(COLOR_PAIR(displayColor));
       mvprintw(j, i, "%c", level->tiles[j][i]);
+      attroff(COLOR_PAIR(displayColor));
     }
   }
 
   for (int i = 0; i < level->numberOfMonsters; i++) {
-    // Sistema de tocha
-    // if (isInRange(*player->position, *level->monsters[i]->position, player->stats->vision)) {
-    //   if (level->monsters[i]->stats->health <= 0)
-    //     drawUnit(level->monsters[i]->position, '%', WHITE);
-    //   else
-    //     drawUnit(level->monsters[i]->position, level->monsters[i]->symbol, level->monsters[i]->color);
-    // }
-
     if (level->monsters[i]->stats->health <= 0)
       drawUnit(level->monsters[i]->position, '%', WHITE);
     else
@@ -167,6 +164,51 @@ void drawLevel() {
   }
 
   drawUnit(player->position, player->symbol, player->color);
+  drawStats();
+}
+
+void drawStats() {
+  Stats * stats = dungeon->player->stats;
+
+  int colorDisplay;
+  int titleCounter = 0;
+  bool nameIsDone = false;
+  bool titleIsDone = false;
+  int healthBarIndex = (((stats->health * 100) / stats->maxHealth) * 30) / 100;
+
+  mvprintw(22, 0, "[");
+  attron(A_REVERSE);
+  for (int i = 0; i < 30; i++) {
+    if (healthBarIndex == 30) colorDisplay = WHITE;
+    else if (healthBarIndex >= 22) colorDisplay = GREEN;
+    else if (healthBarIndex >= 15) colorDisplay = YELLOW;
+    else if (healthBarIndex > 7) colorDisplay = ORANGE;
+    else colorDisplay = RED;
+    if (healthBarIndex <= 15) attron(A_BOLD);
+    attron(COLOR_PAIR(colorDisplay));
+
+    if (!nameIsDone) {
+      printw("%c", dungeon->player->name[i]);
+      if (dungeon->player->name[i + 1] == '\0') {
+        printw(" ");
+        nameIsDone = true;
+      }
+    } else if (!titleIsDone) {
+      printw("%c", dungeon->player->title[titleCounter]);
+      if (dungeon->player->title[titleCounter + 1] == '\0') titleIsDone = true;
+      titleCounter++;
+    } else {
+      printw(" ");
+    }
+
+    attroff(COLOR_PAIR(colorDisplay) | A_BOLD);
+    if (i >= (healthBarIndex - 1)) attroff(A_REVERSE);
+  }
+  printw("]");
+
+  mvprintw(23, 0, "HP: %i(%i) ", stats->health, stats->maxHealth);
+  printw("Atk: %i ", stats->attack);
+  printw("Def: %i ", stats->defence);
 }
 
 /**

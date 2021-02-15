@@ -12,13 +12,17 @@ Player * playerSetup() {
   newPlayer->position->y = 15;
 
   newPlayer->symbol = '@';
-  newPlayer->color = YELLOW;
+  newPlayer->color = ORANGE;
+
+  strcpy(newPlayer->name, "Kovthe");
+  strcpy(newPlayer->title, "the Necromancer");
 
   newPlayer->stats = malloc(sizeof(Stats));
   newPlayer->stats->health = 10;
+  newPlayer->stats->maxHealth = 10;
   newPlayer->stats->attack = 10;
   newPlayer->stats->defence = 3;
-  newPlayer->stats->vision = 5;
+  newPlayer->stats->vision = 1;
   
   return newPlayer;
 }

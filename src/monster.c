@@ -120,6 +120,7 @@ Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
 
   newMonster->stats = malloc(sizeof(Stats));
   newMonster->stats->health = stats[0];
+  newMonster->stats->maxHealth = stats[0];
   newMonster->stats->attack = stats[1];
   newMonster->stats->defence = stats[2];
   newMonster->stats->vision = stats[3];
@@ -136,10 +137,8 @@ Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
  */
 void setStartingPosition(Monster * monster, Room * room) {
   monster->position = malloc(sizeof(Position));
-  do {
-    monster->position->x = (rand() % (room->width - 2)) + room->position.x + 1;
-    monster->position->y = (rand() % (room->height - 2)) + room->position.y + 1;
-  } while(checkPosition(monster->position, 0, 0) == false);
+  monster->position->x = (rand() % (room->width - 2)) + room->position.x + 1;
+  monster->position->y = (rand() % (room->height - 2)) + room->position.y + 1;
 }
 
 /**
@@ -153,7 +152,7 @@ void moveMonsters() {
 
   for (int i = 0; i < dungeon->levels[dungeon->currentLevel]->numberOfMonsters; i++) {
     if (monsters[i]->stats->health <= 0) continue;
-    monsters[i]->seeking = isInRange(*monsters[i]->position, *player->position, monsters[i]->stats->vision);
+    monsters[i]->seeking = isInRange(*monsters[i]->position, *player->position, monsters[i]->stats->vision, true, false);
 
     Position offset;
     if (monsters[i]->seeking)
@@ -173,20 +172,6 @@ void moveMonsters() {
       attack(monsters[i]->stats, enemyPosition, PLAYER);
     }
   }
-}
-
-/**
- * Retorna se o jogador está no campo de visão do monstro 
- *
- * @param Position* initial
- * @param Position* final
- * @param int maxDistance
- * @returns Boolean
- */
-bool isInRange(Position initial, Position final, int maxDistance) {
-  double distance = sqrt(pow(final.x - initial.x, 2) + pow((final.y - initial.y) * 2, 2));
-  if (distance <= maxDistance) return true;
-  return false;
 }
 
 /**

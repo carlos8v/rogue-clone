@@ -27,6 +27,5 @@ void attack(Stats * unit, Position enemyPosition, int enemyType) {
     Stats * playerStats = dungeon->player->stats;
     int attackValue = unit->attack - playerStats->defence;
     playerStats->health -= (attackValue <= 0 ? 0 : attackValue);
-    mvprintw(21, 15, "%i ", playerStats->health);
   }
 }

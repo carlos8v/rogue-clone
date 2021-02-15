@@ -7,23 +7,9 @@
 #include <math.h>
 #include <time.h>
 
-typedef struct Level {
-  int level;
-  char ** tiles;
-  char ** unitsMap;
-  
-  int numberOfRooms;
-  struct Room ** rooms;
-
-  int numberOfMonsters;
-  struct Monster ** monsters;
-
-  int numberOfItems;
-  struct Item ** items;
-} Level;
-
 typedef struct Stats {
   int health;
+  int maxHealth;
   int attack;
   int defence;
   int vision;
@@ -37,11 +23,20 @@ typedef struct Position {
 typedef struct Monster {
   char name[20];
   char symbol;
+  int color;
   bool seeking;
   Stats * stats;
-  int color;
   Position * position;
 } Monster;
+
+typedef struct Player {
+  char name[20];
+  char title[20];
+  char symbol;
+  int color;
+  Stats * stats;
+  Position * position;
+} Player;
 
 typedef struct Item {} Item;
 
@@ -52,12 +47,20 @@ typedef struct Room {
   Position ** doors;
 } Room;
 
-typedef struct Player {
-  Position * position;
-  char symbol;
-  int color;
-  Stats * stats;
-} Player;
+typedef struct Level {
+  int level;
+  char ** tiles;
+  char ** unitsMap;
+  
+  int numberOfRooms;
+  Room ** rooms;
+
+  int numberOfMonsters;
+  Monster ** monsters;
+
+  int numberOfItems;
+  Item ** items;
+} Level;
 
 typedef struct Dungeon {
   int currentLevel;
@@ -84,8 +87,10 @@ bool screenSetup();
 void createBorders();
 void drawRoom(Room * room);
 void drawLevel();
+void drawStats();
 void drawUnit(Position * position, char symbol, int color);
 
+short * getColorFormat(int red, int green, int blue);
 void debug(char input);
 void printColors();
 
@@ -109,10 +114,11 @@ Monster * createMonster(char name[20], char symbol, int stats[4], int color);
 void setStartingPosition(Monster * monster, Room * room);
 
 void moveMonsters();
-bool isInRange(Position initial, Position final, int maxDistance);
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);
 
+double getDistance(Position initial, Position final, bool oval);
+bool isInRange(Position initial, Position final, int range, bool perspective, bool smooth);
 void attack(Stats * unit, Position enemyPosition, int enemyType);
 
 Room ** roomsSetup();

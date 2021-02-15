@@ -64,9 +64,9 @@ bool handleInput(int input) {
     case 0:
       break;
     default:
-      mvprintw(23, 0, "Input: Comando não encontrado");
+      mvprintw(22, 40, "Input: Comando não encontrado");
       getch();
-      mvprintw(23, 0, "                              ");
+      mvprintw(22, 40, "                              ");
       break;
   }
   debug(input);
