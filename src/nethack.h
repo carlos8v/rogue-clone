@@ -70,12 +70,13 @@ typedef struct Dungeon {
 } Dungeon;
 
 #define WHITE 1
-#define GREEN 2
-#define CYAN 3
-#define ORANGE 4
-#define RED 5
-#define YELLOW 6
-#define PINK 7
+#define CYAN 2
+#define GREEN 3
+#define YELLOW 4
+#define ORANGE 5
+#define RED 6
+#define PURPLE 7
+#define BLUE 8
 
 #define SCREEN_WIDTH 79
 #define SCREEN_HEIGHT 19

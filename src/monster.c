@@ -57,7 +57,7 @@ Monster * selectMonster(int level) {
   };
   
   int monstersColors[3][3] = {
-    { WHITE, PINK, RED },
+    { WHITE, PURPLE, RED },
     { WHITE, ORANGE, RED },
     { ORANGE, WHITE, CYAN }
   };

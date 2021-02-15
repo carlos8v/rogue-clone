@@ -20,7 +20,7 @@ void printColors() {
     if (j == 1) attron(A_BOLD);
     else if (j == 2) attron(A_REVERSE);
     else if (j == 3) attron(A_REVERSE | A_BOLD);
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 8; i++) {
       attron(COLOR_PAIR(i + 1));
       mvprintw(i, j * 5, "Test");
       attroff(COLOR_PAIR(i + 1));
@@ -48,42 +48,46 @@ short * getColorFormat(int red, int green, int blue) {
 bool screenSetup() {
   initscr();
 
-  if (has_colors) start_color();
+  if (has_colors()) start_color();
   if (can_change_color()) {
     short * bg_color = getColorFormat(40, 42, 54);
     short * fg_color = getColorFormat(255, 255, 255);
-    short * green_color = getColorFormat(80, 250, 123);
     short * cyan_color = getColorFormat(139, 233, 253);
+    short * green_color = getColorFormat(80, 250, 123);
+    short * yellow_color = getColorFormat(242, 208, 12);
     short * orange_color = getColorFormat(255, 164, 45);
     short * red_color = getColorFormat(255, 85, 85);
-    short * yellow_color = getColorFormat(242, 208, 12);
-    short * pink_color = getColorFormat(255, 121, 198);
+    short * purple_color = getColorFormat(227, 97, 232);
+    short * blue_color = getColorFormat(71, 116, 252);
 
     init_color(0, bg_color[0], bg_color[1], bg_color[2]);
-    init_color(1, green_color[0], green_color[1], green_color[2]);
-    init_color(2, cyan_color[0], cyan_color[1], cyan_color[2]);
-    init_color(3, orange_color[0], orange_color[1], orange_color[2]);
-    init_color(4, red_color[0], red_color[1], red_color[2]);
-    init_color(5, yellow_color[0], yellow_color[1], yellow_color[2]);
-    init_color(6, pink_color[0], pink_color[1], pink_color[2]);
+    init_color(1, cyan_color[0], cyan_color[1], cyan_color[2]);
+    init_color(2, green_color[0], green_color[1], green_color[2]);
+    init_color(3, yellow_color[0], yellow_color[1], yellow_color[2]);
+    init_color(4, orange_color[0], orange_color[1], orange_color[2]);
+    init_color(5, red_color[0], red_color[1], red_color[2]);
+    init_color(6, purple_color[0], purple_color[1], purple_color[2]);
     init_color(7, fg_color[0], fg_color[1], fg_color[2]);
 
     init_color(8, bg_color[0], bg_color[1], bg_color[2]);
-    init_color(9, green_color[0], green_color[1], green_color[2]);
-    init_color(10, cyan_color[0], cyan_color[1], cyan_color[2]);
-    init_color(11, orange_color[0], orange_color[1], orange_color[2]);
-    init_color(12, red_color[0], red_color[1], red_color[2]);
-    init_color(13, yellow_color[0], yellow_color[1], yellow_color[2]);
-    init_color(14, pink_color[0], pink_color[1], pink_color[2]);
+    init_color(9, cyan_color[0], cyan_color[1], cyan_color[2]);
+    init_color(10, green_color[0], green_color[1], green_color[2]);
+    init_color(11, yellow_color[0], yellow_color[1], yellow_color[2]);
+    init_color(12, orange_color[0], orange_color[1], orange_color[2]);
+    init_color(13, red_color[0], red_color[1], red_color[2]);
+    init_color(14, purple_color[0], purple_color[1], purple_color[2]);
     init_color(15, fg_color[0], fg_color[1], fg_color[2]);
 
+    init_color(16, blue_color[0], blue_color[1], blue_color[2]);
+
     init_pair(WHITE, 7, 0);
-    init_pair(GREEN, 1, 0);
-    init_pair(CYAN, 2, 0);
-    init_pair(ORANGE, 3, 0);
-    init_pair(RED, 4, 0);
-    init_pair(YELLOW, 5, 0);
-    init_pair(PINK, 6, 0);
+    init_pair(CYAN, 1, 0);
+    init_pair(GREEN, 2, 0);
+    init_pair(YELLOW, 3, 0);
+    init_pair(ORANGE, 4, 0);
+    init_pair(RED, 5, 0);
+    init_pair(PURPLE, 6, 0);
+    init_pair(BLUE, 16, 0);
 
     wattron(stdscr, COLOR_PAIR(1));
   } else {
@@ -92,8 +96,6 @@ bool screenSetup() {
     endwin();
     return false;
   }
-
-  printColors();
 
   keypad(stdscr, TRUE);
   srand(time(NULL));
