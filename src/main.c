@@ -6,12 +6,12 @@ int main() {
   dungeon = dungeonSetup();
 
   drawLevel();
-  move(dungeon->player->position->y, dungeon->player->position->x);
 
   int input = 0;
   int monsterMove = 0;
 
   do {
+    clearResult();
     if (handleInput(input)) {
       if (++monsterMove > 1) {
         moveMonsters();
@@ -19,8 +19,8 @@ int main() {
       }
       if (dungeon->player->stats->health <= 0) break;
       drawLevel();
-      move(dungeon->player->position->y, dungeon->player->position->x);
     }
+    refreshScreens();
   } while ((input = getch()) != 'Q');
 
   endwin();

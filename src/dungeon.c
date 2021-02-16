@@ -13,7 +13,7 @@ Dungeon * dungeonSetup() {
 
   newDungeon->levels = malloc(sizeof(Level *) * newDungeon->numberOfLevels);
   for (int i = 0; i < newDungeon->numberOfLevels; i++) {
-    clear();
+    wclear(mapscr);
     newDungeon->levels[i] = createLevel(i + 1);
   }
 

@@ -66,7 +66,6 @@ bool handleInput(int input) {
       break;
     default:
       printResult("Input: Comando não encontrado;");
-      getch();
       break;
   }
   debug(input);

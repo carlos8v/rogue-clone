@@ -54,7 +54,7 @@ int checkUnits(Position * position, Position offset) {
  */
 bool checkPosition(Position * position, int xOffset, int yOffset) {
   char target;
-  switch (target = mvinch(position->y + yOffset, position->x + xOffset)) {
+  switch (target = mvwinch(mapscr, position->y + yOffset, position->x + xOffset)) {
     case '@': case '%': case '+':
     case '#': case '.':
       return true;
@@ -74,7 +74,7 @@ char ** saveTiles() {
   for (int j = 0; j <= MAP_HEIGHT; j++) {
     level[j] = malloc(sizeof(char) * (MAP_WIDTH + 1));
     for (int i = 0; i <= MAP_WIDTH; i++) {
-      level[j][i] = mvinch(j, i);
+      level[j][i] = mvwinch(mapscr, j, i);
     }
   }
   return level;

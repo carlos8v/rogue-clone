@@ -82,6 +82,11 @@ typedef struct Dungeon {
 #define MAP_HEIGHT 19
 
 enum TILE { VOID, FLOOR, PLAYER, MONSTER, ITEM };
+
+WINDOW * resscr;
+WINDOW * mapscr;
+WINDOW * statscr;
+
 Dungeon * dungeon;
 
 bool screenSetup();
@@ -91,6 +96,8 @@ void drawLevel();
 void drawStats();
 void drawUnit(Position * position, char symbol, int color);
 
+void refreshScreens();
+void clearResult();
 void printResult(char result[79]);
 
 short * getColorFormat(int red, int green, int blue);
