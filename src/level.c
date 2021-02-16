@@ -18,12 +18,24 @@ Level * createLevel(int level) {
 }
 
 /**
+ * 
+ */
+bool outOfBounds(Position * position, Position offset) {
+  Position checkPosition;
+  checkPosition.x = position->x + offset.x;
+  checkPosition.y = position->y + offset.y;
+  return (checkPosition.x < 0) || (checkPosition.x > MAP_WIDTH)
+    || (checkPosition.y < 0) || (checkPosition.y > MAP_HEIGHT);
+}
+
+/**
  * Checa no unitsMap se existe chão, jogador, monstro ou item na posição passada
  * @param Position* position
  * @param Position offset
  * @returns int
  */
 int checkUnits(Position * position, Position offset) {
+  if (outOfBounds(position, offset)) return VOID;
   char ** unitsMap = dungeon->levels[dungeon->currentLevel]->unitsMap;
   switch(unitsMap[position->y + offset.y][position->x + offset.x]) {
     case '.': return FLOOR;
@@ -58,10 +70,10 @@ bool checkPosition(Position * position, int xOffset, int yOffset) {
  * @returns char**
  */
 char ** saveTiles() {
-  char ** level = malloc(sizeof(char *) * (SCREEN_HEIGHT + 1));
-  for (int j = 0; j <= SCREEN_HEIGHT; j++) {
-    level[j] = malloc(sizeof(char) * (SCREEN_WIDTH + 1));
-    for (int i = 0; i <= SCREEN_WIDTH; i++) {
+  char ** level = malloc(sizeof(char *) * (MAP_HEIGHT + 1));
+  for (int j = 0; j <= MAP_HEIGHT; j++) {
+    level[j] = malloc(sizeof(char) * (MAP_WIDTH + 1));
+    for (int i = 0; i <= MAP_WIDTH; i++) {
       level[j][i] = mvinch(j, i);
     }
   }
@@ -88,10 +100,10 @@ void changeUnitsMap(char ** unitsMap, Position * position, int xOffset, int yOff
  * @returns char**
  */
 char ** initializeUnitsMap() {
-  char ** units = malloc(sizeof(char*) * (SCREEN_HEIGHT + 1));
-  for (int j = 0; j <= SCREEN_HEIGHT; j++) {
-    units[j] = malloc(sizeof(char) * (SCREEN_WIDTH + 1));
-    for (int i = 0; i <= SCREEN_WIDTH; i++) {
+  char ** units = malloc(sizeof(char*) * (MAP_HEIGHT + 1));
+  for (int j = 0; j <= MAP_HEIGHT; j++) {
+    units[j] = malloc(sizeof(char) * (MAP_WIDTH + 1));
+    for (int i = 0; i <= MAP_WIDTH; i++) {
       units[j][i] = '.';
     }
   }

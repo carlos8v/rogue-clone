@@ -19,7 +19,7 @@ int main() {
       }
       if (dungeon->player->stats->health <= 0) break;
       drawLevel();
-      move(dungeon->player->position->y, dungeon->player->position->x); 
+      move(dungeon->player->position->y, dungeon->player->position->x);
     }
   } while ((input = getch()) != 'Q');
 

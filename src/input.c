@@ -59,14 +59,14 @@ bool handleInput(int input) {
       }
       break;
     case '.':
+      printResult("Você descansou...");
       shouldMove = true;
       break;
     case 0:
       break;
     default:
-      mvprintw(22, 40, "Input: Comando não encontrado");
+      printResult("Input: Comando não encontrado;");
       getch();
-      mvprintw(22, 40, "                              ");
       break;
   }
   debug(input);

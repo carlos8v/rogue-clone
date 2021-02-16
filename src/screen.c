@@ -33,14 +33,6 @@ void printColors() {
   getch();
 }
 
-short * getColorFormat(int red, int green, int blue) {
-  short * color = malloc(sizeof(short) * 3);
-  color[0] = (red * 1000) / 255;
-  color[1] = (green * 1000) / 255;
-  color[2] = (blue * 1000) / 255;
-  return color;
-}
-
 /**
  * Inicializa as configurações iniciais da tela
  * @returns bool
@@ -104,6 +96,14 @@ bool screenSetup() {
   return true;
 }
 
+short * getColorFormat(int red, int green, int blue) {
+  short * color = malloc(sizeof(short) * 3);
+  color[0] = (red * 1000) / 255;
+  color[1] = (green * 1000) / 255;
+  color[2] = (blue * 1000) / 255;
+  return color;
+}
+
 /**
  * Printa na tela os caractéries corretos da sala
  * @param Room* room
@@ -135,8 +135,8 @@ void drawLevel() {
   Level * level = dungeon->levels[dungeon->currentLevel];
   Player * player = dungeon->player;
 
-  for (int j = 0; j <= SCREEN_HEIGHT; j++) {
-    for (int i = 0; i <= SCREEN_WIDTH; i++) {
+  for (int j = 0; j <= MAP_HEIGHT; j++) {
+    for (int i = 0; i <= MAP_WIDTH; i++) {
       Position position;
       position.x = i;
       position.y = j;
@@ -167,6 +167,24 @@ void drawLevel() {
 
   drawUnit(player->position, player->symbol, player->color);
   drawStats();
+}
+
+/**
+ * Printa na tela o caractére do personagem (Jogador ou monstro)
+ * 
+ * @param Position* position
+ * @param char symbol
+ * @param int color
+ */
+void drawUnit(Position * position, char symbol, int color) {
+  attron(COLOR_PAIR(color));
+  mvprintw(position->y, position->x, "%c", symbol);
+  attroff(COLOR_PAIR(color));
+}
+
+void printResult(char result[79]) {
+  for (int i = 0; i < 79; i++) mvprintw(21, i, " ");
+  mvprintw(21, 0, "%s", result);
 }
 
 void drawStats() {
@@ -211,17 +229,4 @@ void drawStats() {
   mvprintw(23, 0, "HP: %i(%i) ", stats->health, stats->maxHealth);
   printw("Atk: %i ", stats->attack);
   printw("Def: %i ", stats->defence);
-}
-
-/**
- * Printa na tela o caractére do personagem (Jogador ou monstro)
- * 
- * @param Position* position
- * @param char symbol
- * @param int color
- */
-void drawUnit(Position * position, char symbol, int color) {
-  attron(COLOR_PAIR(color));
-  mvprintw(position->y, position->x, "%c", symbol);
-  attroff(COLOR_PAIR(color));
 }

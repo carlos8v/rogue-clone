@@ -78,10 +78,10 @@ typedef struct Dungeon {
 #define PURPLE 7
 #define BLUE 8
 
-#define SCREEN_WIDTH 79
-#define SCREEN_HEIGHT 19
+#define MAP_WIDTH 79
+#define MAP_HEIGHT 19
 
-enum TILE { FLOOR, PLAYER, MONSTER, ITEM };
+enum TILE { VOID, FLOOR, PLAYER, MONSTER, ITEM };
 Dungeon * dungeon;
 
 bool screenSetup();
@@ -90,6 +90,8 @@ void drawRoom(Room * room);
 void drawLevel();
 void drawStats();
 void drawUnit(Position * position, char symbol, int color);
+
+void printResult(char result[79]);
 
 short * getColorFormat(int red, int green, int blue);
 void debug(char input);
@@ -104,6 +106,7 @@ Level * createLevel(int level);
 char ** saveTiles();
 char ** initializeUnitsMap();
 void changeUnitsMap(char ** unitsMap, Position * position, int xOffset, int yOffset, char symbol);
+bool outOfBounds(Position * position, Position offset);
 int checkUnits(Position * position, Position offset);
 bool checkPosition(Position * position, int xOffset, int yOffset);
 
