@@ -20,7 +20,7 @@ Commands:
  * @param int input
  * @param Player player
  * @param Level* level
- * @returns boolean
+ * @return boolean
  */
 bool handleInput(int input) {
   Player * player = dungeon->player;

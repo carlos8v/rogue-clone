@@ -22,7 +22,7 @@ bool isInRange(Position initial, Position final, int range, bool perspective, bo
  * @param Position* initial
  * @param Position* final
  * @param bool perspective
- * @returns double
+ * @return double
  */
 double getDistance(Position initial, Position final, bool perspective) {
   int offset = perspective ? 2 : 1;

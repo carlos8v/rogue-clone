@@ -31,7 +31,7 @@ void printColors() {
 
 /**
  * Inicializa as configurações iniciais da tela
- * @returns bool
+ * @return bool
  */
 bool screenSetup() {
   initscr();

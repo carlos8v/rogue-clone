@@ -31,7 +31,7 @@ void addMonsters(Level * level) {
  * Retorna um monsto com a espécie e status baseado no level passado
  *
  * @param int level
- * @returns Monster*
+ * @return Monster*
  */
 Monster * selectMonster(int level) {
   int monsterSpecies;
@@ -109,7 +109,7 @@ Monster * selectMonster(int level) {
  * @param char symbol
  * @param int stats[3]
  * @param int color
- * @returns Monster*
+ * @return Monster*
  */
 Monster * createMonster(char name[20], char symbol, int stats[3], int color) {
   Monster * newMonster = malloc(sizeof(Monster));
@@ -178,7 +178,7 @@ void moveMonsters() {
  * Retorna um offset para a posição do monstro quando ele está vagando
  *
  * @param Position* monsterPosition
- * @returns Position* offset
+ * @return Position* offset
  */
 Position wander(Position * monterPosition) {
   Position offset;
@@ -196,7 +196,7 @@ Position wander(Position * monterPosition) {
  *
  * @param Position* monsterPosition
  * @param Position* destination
- * @returns Position* offset
+ * @return Position* offset
  */
 Position seek(Position * monsterPosition, Position * destination) {
   Position offset;

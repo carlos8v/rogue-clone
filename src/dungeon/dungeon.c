@@ -3,7 +3,7 @@
 /**
  * Retorna uma nova instância da struct Dungeon
  *
- * @returns Dungeon*
+ * @return Dungeon*
  */
 Dungeon * dungeonSetup() {
   Dungeon * newDungeon = malloc(sizeof(Dungeon));

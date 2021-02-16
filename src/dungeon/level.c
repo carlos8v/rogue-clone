@@ -4,7 +4,7 @@
  * Retorna uma nova instância da struct Level
  *
  * @param int level
- * @returns Level*
+ * @return Level*
  */
 Level * createLevel(int level) {
   Level *  newLevel = malloc(sizeof(Level));
@@ -32,7 +32,7 @@ bool outOfBounds(Position * position, Position offset) {
  * Checa no unitsMap se existe chão, jogador, monstro ou item na posição passada
  * @param Position* position
  * @param Position offset
- * @returns int
+ * @return int
  */
 int checkUnits(Position * position, Position offset) {
   if (outOfBounds(position, offset)) return VOID;
@@ -50,7 +50,7 @@ int checkUnits(Position * position, Position offset) {
  * @param Position* position
  * @param int xOffset
  * @param int yOffset
- * @returns boolean
+ * @return boolean
  */
 bool checkPosition(Position * position, int xOffset, int yOffset) {
   char target;
@@ -67,7 +67,7 @@ bool checkPosition(Position * position, int xOffset, int yOffset) {
  * Retorna um array com todos os caractéres presentes 
  * no level atual, ignorando items ou monstros
  *
- * @returns char**
+ * @return char**
  */
 char ** saveTiles() {
   char ** level = malloc(sizeof(char *) * (MAP_HEIGHT + 1));
@@ -97,7 +97,7 @@ void changeUnitsMap(char ** unitsMap, Position * position, int xOffset, int yOff
 /**
  * Retorna um array para verificação dos caractéres do personagem e monstros
  *
- * @returns char**
+ * @return char**
  */
 char ** initializeUnitsMap() {
   char ** units = malloc(sizeof(char*) * (MAP_HEIGHT + 1));

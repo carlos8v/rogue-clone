@@ -3,7 +3,7 @@
 /**
  * Cria a estrutura inicial de todas as salas do level atual
  *
- * @returns Room**
+ * @return Room**
  */
 Room ** roomsSetup() {
   Room ** rooms = malloc(sizeof(Room) * 3);
@@ -25,7 +25,7 @@ Room ** roomsSetup() {
 /**
  * Retorna uma nova instância da struct Room
  *
- * @returns Room*
+ * @return Room*
  */
 Room * createRoom(int x, int y, int height, int width) {
   Room * newRoom = malloc(sizeof(Room));
