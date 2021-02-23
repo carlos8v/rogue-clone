@@ -18,12 +18,18 @@ Level * createLevel(int level) {
 }
 
 /**
+ * Checa se a posição está dentro do mapa
+ * 
+ * @param Position position
+ * @param int xOffset
+ * @param int yOffset
+ * @return bool
  * 
  */
-bool outOfBounds(Position * position, Position offset) {
+bool outOfBounds(Position position, int xOffset, int yOffset) {
   Position checkPosition;
-  checkPosition.x = position->x + offset.x;
-  checkPosition.y = position->y + offset.y;
+  checkPosition.x = position.x + xOffset;
+  checkPosition.y = position.y + yOffset;
   return (checkPosition.x < 0) || (checkPosition.x > MAP_WIDTH)
     || (checkPosition.y < 0) || (checkPosition.y > MAP_HEIGHT);
 }
@@ -31,13 +37,14 @@ bool outOfBounds(Position * position, Position offset) {
 /**
  * Checa no unitsMap se existe chão, jogador, monstro ou item na posição passada
  * @param Position* position
- * @param Position offset
+ * @param int xOffset
+ * @param int yOffset
  * @return int
  */
-int checkUnits(Position * position, Position offset) {
-  if (outOfBounds(position, offset)) return VOID;
+int checkUnits(Position * position, int xOffset, int yOffset) {
+  if (outOfBounds(*position, xOffset, yOffset)) return VOID;
   char ** unitsMap = dungeon->levels[dungeon->currentLevel]->unitsMap;
-  switch(unitsMap[position->y + offset.y][position->x + offset.x]) {
+  switch(unitsMap[position->y + yOffset][position->x + xOffset]) {
     case '.': return FLOOR;
     case '@': return PLAYER;
     default: return MONSTER;

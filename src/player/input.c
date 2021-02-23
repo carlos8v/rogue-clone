@@ -43,7 +43,7 @@ bool handleInput(int input) {
       else if (input == '3' || input == KEY_DOWN) { offset.x = 1; offset.y = 1; }
       else if (input == '7' || input == KEY_UP) { offset.x = -1; offset.y = -1; }
       else if (input == '9' || input == KEY_RIGHT) { offset.x = 1; offset.y = -1; }
-      if (checkUnits(player->position, offset) == MONSTER) {
+      if (checkUnits(player->position, offset.x, offset.y) == MONSTER) {
         Position enemyPosition;
         enemyPosition.x = player->position->x + offset.x;
         enemyPosition.y = player->position->y + offset.y;

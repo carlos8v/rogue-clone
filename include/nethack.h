@@ -113,8 +113,8 @@ Level * createLevel(int level);
 char ** saveTiles();
 char ** initializeUnitsMap();
 void changeUnitsMap(char ** unitsMap, Position * position, int xOffset, int yOffset, char symbol);
-bool outOfBounds(Position * position, Position offset);
-int checkUnits(Position * position, Position offset);
+bool outOfBounds(Position position, int xOffset, int yOffset);
+int checkUnits(Position * position, int xOffset, int yOffset);
 bool checkPosition(Position * position, int xOffset, int yOffset);
 
 Player * playerSetup();
@@ -127,6 +127,9 @@ void setStartingPosition(Monster * monster, Room * room);
 void moveMonsters();
 Position seek(Position * monsterPosition, Position * destination);
 Position wander(Position * monsterPosition);
+
+int addNeighbors(Position * frontier, int frontierCount, Position ** cameFrom, bool ** visited, Position position, bool ** rules);
+Position ** getPath(Position initial, Position final, bool ** rules);
 
 double getDistance(Position initial, Position final, bool oval);
 bool isInRange(Position initial, Position final, int range, bool perspective, bool smooth);

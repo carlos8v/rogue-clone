@@ -154,21 +154,21 @@ void moveMonsters() {
     if (monsters[i]->stats->health <= 0) continue;
     monsters[i]->seeking = isInRange(*monsters[i]->position, *player->position, monsters[i]->stats->vision, true, false);
 
-    Position offset;
+    Position direction;
     if (monsters[i]->seeking)
-      offset = seek(monsters[i]->position, player->position);
+      direction = seek(monsters[i]->position, player->position);
     else
-      offset = wander(monsters[i]->position);
+      direction = wander(monsters[i]->position);
 
-    if (checkUnits(monsters[i]->position, offset) == FLOOR) {
-      changeUnitsMap(unitsMap, monsters[i]->position, offset.x, offset.y, monsters[i]->symbol);
-      monsters[i]->position->x += offset.x;
-      monsters[i]->position->y += offset.y;
+    if (checkUnits(monsters[i]->position, direction.x, direction.y) == FLOOR) {
+      changeUnitsMap(unitsMap, monsters[i]->position, direction.x, direction.y, monsters[i]->symbol);
+      monsters[i]->position->x += direction.x;
+      monsters[i]->position->y += direction.y;
     }
-    else if (checkUnits(monsters[i]->position, offset) == PLAYER) {
+    else if (checkUnits(monsters[i]->position, direction.x, direction.y) == PLAYER) {
       Position enemyPosition;
-      enemyPosition.x = monsters[i]->position->x + offset.x;
-      enemyPosition.y = monsters[i]->position->y + offset.y;
+      enemyPosition.x = monsters[i]->position->x + direction.x;
+      enemyPosition.y = monsters[i]->position->y + direction.y;
       attack(monsters[i]->stats, enemyPosition, PLAYER);
     }
   }
@@ -199,24 +199,22 @@ Position wander(Position * monterPosition) {
  * @return Position* offset
  */
 Position seek(Position * monsterPosition, Position * destination) {
-  Position offset;
-  offset.x = 0;
-  offset.y = 0;
-  if ((abs((monsterPosition->y - 1) - destination->y) < abs(monsterPosition->y - destination->y))
-    && checkPosition(monsterPosition, 0, -1)) {
-    offset.y -= 1;
+  char ** tiles = dungeon->levels[dungeon->currentLevel]->tiles;
+  bool ** rules = malloc(sizeof(bool*) * (MAP_HEIGHT + 1));
+  for (int j = 0; j <= MAP_HEIGHT; j++) {
+    rules[j] = malloc(sizeof(bool) * (MAP_WIDTH));
+    for (int i = 0; i <= MAP_WIDTH; i++) {
+      if (tiles[j][i] == '.' || tiles[j][i] == '#' || tiles[j][i] == '+')
+        rules[j][i] = true;
+      else
+        rules[j][i] = false;
+    }
   }
-  else if ((abs((monsterPosition->x + 1) - destination->x) < abs(monsterPosition->x - destination->x))
-    && checkPosition(monsterPosition, 1, 0)) {
-    offset.x += 1;
-  }
-  else if ((abs((monsterPosition->y + 1) - destination->y) < abs(monsterPosition->y - destination->y)) 
-    && checkPosition(monsterPosition, 0, 1)) {
-    offset.y += 1;
-  }
-  else if ((abs((monsterPosition->x - 1) - destination->x) < abs(monsterPosition->x - destination->x))
-    && checkPosition(monsterPosition, -1, 0)) {
-    offset.x -= 1;
-  }
-  return offset;
+  
+  Position ** path = getPath(*destination, *monsterPosition, rules);
+  Position direction;
+  direction.x = path[monsterPosition->y][monsterPosition->x].x - monsterPosition->x;
+  direction.y = path[monsterPosition->y][monsterPosition->x].y - monsterPosition->y;
+  free(path);
+  return direction;
 }
