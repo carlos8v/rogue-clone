@@ -4,7 +4,7 @@ CFLAGS = -lncurses -lm -I$(IDIR)
 IDIR = ./include
 SRCDIR = ./src/
 OUTDIR = ./build/
-OUT = nethack
+OUT = rogue
 
 SOURCES = $(SRCDIR)*.c $(SRCDIR)*/*.c
 

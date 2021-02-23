@@ -1,4 +1,4 @@
-#include "nethack.h"
+#include "rogue.h"
 
 /**
  * Atualiza os stats de uma unidade com o valor de ataque

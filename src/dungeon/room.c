@@ -1,4 +1,4 @@
-#include "nethack.h"
+#include "rogue.h"
 
 /**
  * Cria a estrutura inicial de todas as salas do level atual

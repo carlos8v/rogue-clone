@@ -1,4 +1,4 @@
-#include "nethack.h"
+#include "rogue.h"
 
 /**
  * Adiciona os tiles vizinhos e retorna o frontierCount atualizado

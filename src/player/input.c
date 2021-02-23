@@ -1,4 +1,4 @@
-#include "nethack.h"
+#include "rogue.h"
 
 /*
 Commands:

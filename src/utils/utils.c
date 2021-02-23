@@ -1,4 +1,4 @@
-#include "nethack.h"
+#include "rogue.h"
 
 /**
  * Retorna se uma posição está no perímetro passado

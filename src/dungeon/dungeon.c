@@ -1,4 +1,4 @@
-#include "nethack.h"
+#include "rogue.h"
 
 /**
  * Retorna uma nova instância da struct Dungeon

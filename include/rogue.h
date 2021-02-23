@@ -1,5 +1,5 @@
-#ifndef NETHACK_H
-#define NETHACK_H
+#ifndef ROGUE_H
+#define ROGUE_H
 
 #include <ncurses.h>
 #include <stdlib.h>

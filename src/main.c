@@ -1,4 +1,4 @@
-#include "nethack.h"
+#include "rogue.h"
 
 int main() {
   if (!screenSetup()) return 0;
