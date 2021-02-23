@@ -60,8 +60,8 @@ int checkUnits(Position * position, int xOffset, int yOffset) {
  * @return boolean
  */
 bool checkPosition(Position * position, int xOffset, int yOffset) {
-  char target;
-  switch (target = mvwinch(mapscr, position->y + yOffset, position->x + xOffset)) {
+  char ** tiles = dungeon->levels[dungeon->currentLevel]->tiles;
+  switch (tiles[position->y + yOffset][position->x + xOffset]) {
     case '@': case '%': case '+':
     case '#': case '.':
       return true;
