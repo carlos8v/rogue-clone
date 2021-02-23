@@ -12,7 +12,7 @@ A simple copy of the original roguelike.
 - Basic moviments.
 - Stats display system.
 - Simple pathfinding.
-- Simple attack's.
+- Simple attacks.
 
 #### Inspiration
 - [Wadsworj's Series](https://github.com/wadsworj/rogue)
