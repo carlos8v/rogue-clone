@@ -3,21 +3,22 @@
 /**
  * Cria a estrutura inicial de todas as salas do level atual
  *
+ * @param char** tiles
  * @return Room**
  */
-Room ** roomsSetup() {
+Room ** roomsSetup(char ** tiles) {
   Room ** rooms = malloc(sizeof(Room) * 3);
   rooms[0] = createRoom(13, 13, 6, 8);
-  drawRoom(rooms[0]);
+  saveRoom(rooms[0], tiles);
 
   rooms[1] = createRoom(40, 2, 6, 8);
-  drawRoom(rooms[1]);
+  saveRoom(rooms[1], tiles);
 
   rooms[2] = createRoom(40, 10, 6, 12);
-  drawRoom(rooms[2]);
+  saveRoom(rooms[2], tiles);
 
-  connectDoors(rooms[0]->doors[1], rooms[2]->doors[3]);
-  connectDoors(rooms[0]->doors[0], rooms[1]->doors[3]);
+  connectDoors(rooms[0]->doors[1], rooms[2]->doors[3], tiles);
+  connectDoors(rooms[0]->doors[0], rooms[1]->doors[3], tiles);
 
   return rooms;
 }
@@ -61,46 +62,51 @@ Room * createRoom(int x, int y, int height, int width) {
  * @param Position* doorOne
  * @param Position* doorTwo
  */
-void connectDoors(Position * doorOne, Position * doorTwo) {
-  Position actual, previous;
+void connectDoors(Position * doorOne, Position * doorTwo, char ** tiles) {
+  bool ** rules = malloc(sizeof(bool*) * (MAP_HEIGHT + 1));
+  for (int j = 0; j <= MAP_HEIGHT; j++) {
+    rules[j] = malloc(sizeof(bool) * (MAP_WIDTH + 1));
+    for (int i = 0; i <= MAP_WIDTH; i++) {
+      if (tiles[j][i] == ' ' || tiles[j][i] == '+') rules[j][i] = true;
+      else rules[j][i] = false;
+    }
+  }
   
-  actual.x = doorOne->x;
-  actual.y = doorOne->y;
-  previous = actual;
+  Position ** cameFrom = getPath(*doorOne, *doorTwo, rules);
 
-  int count = 0;
+  Position currentPosition;
+  currentPosition.x = cameFrom[doorTwo->y][doorTwo->x].x;
+  currentPosition.y = cameFrom[doorTwo->y][doorTwo->x].y;
 
-  while(1) {
-    if ((abs((actual.y - 1) - doorTwo->y) < abs(actual.y - doorTwo->y))
-      && (mvwinch(mapscr, actual.y - 1, actual.x) == ' ')) {
-      previous.y = actual.y;
-      actual.y -= 1;
-    }
-    else if ((abs((actual.x + 1) - doorTwo->x) < abs(actual.x - doorTwo->x))
-      && (mvwinch(mapscr, actual.y, actual.x + 1) == ' ')) {
-      previous.x = actual.x;
-      actual.x += 1;
-    }
-    else if ((abs((actual.y + 1) - doorTwo->y) < abs(actual.y - doorTwo->y)) 
-      && (mvwinch(mapscr, actual.y + 1, actual.x) == ' ')) {
-      previous.y = actual.y;
-      actual.y += 1;
-    }
-    else if ((abs((actual.x - 1) - doorTwo->x) < abs(actual.x - doorTwo->x))
-      && (mvwinch(mapscr, actual.y, actual.x - 1) == ' ')) {
-      previous.x = actual.x;
-      actual.x -= 1;
-    } else {
-      if (count == 0) {
-        actual = previous;
-        count++;
-        continue;
+  while(currentPosition.x != doorOne->x || currentPosition.y != doorOne->y) {
+    if (currentPosition.x == -1 || currentPosition.y == -1) break;
+    tiles[currentPosition.y][currentPosition.x] = '#';
+    currentPosition = cameFrom[currentPosition.y][currentPosition.x];
+  }
+}
+
+/**
+ * Salva no tiles os caracteres corretos da sala
+ * 
+ * @param Room* room
+ * @param char** tiles
+ */
+void saveRoom(Room * room, char ** tiles) {
+  int i, j;
+  for (i = room->position.x; i < room->position.x + room->width; i++) {
+    tiles[room->position.y][i] = '-';
+    tiles[room->position.y + room->height][i] = '-';
+    for (j = room->position.y + 1; j < room->position.y + room->height; j++) {
+      if (i == room->position.x || i == room->position.x + room->width - 1) {
+        tiles[j][i] = '|';
       } else {
-        return;
+        tiles[j][i] = '.';
       }
     }
-
-    mvwprintw(mapscr, actual.y, actual.x, "#");
-    wrefresh(mapscr);
   }
+
+  tiles[room->doors[0]->y][room->doors[0]->x] = '+';
+  tiles[room->doors[1]->y][room->doors[1]->x] = '+';
+  tiles[room->doors[2]->y][room->doors[2]->x] = '+';
+  tiles[room->doors[3]->y][room->doors[3]->x] = '+';
 }

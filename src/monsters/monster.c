@@ -184,7 +184,7 @@ Position wander(Position * monterPosition) {
   Position offset;
   offset.x = (rand() % 3) - 1;
   offset.y = (rand() % 3) - 1;
-  if (!checkPosition(monterPosition, offset.x, offset.y)) {
+  if (!checkPosition(*monterPosition, offset.x, offset.y)) {
     offset.x = 0;
     offset.y = 0;
   }

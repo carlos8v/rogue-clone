@@ -113,30 +113,6 @@ void refreshScreens() {
 }
 
 /**
- * Printa na tela os caractéries corretos da sala
- * @param Room* room
- */
-void drawRoom(Room * room) {
-  int i, j;
-  for (i = room->position.x; i < room->position.x + room->width; i++) {
-    mvwprintw(mapscr, room->position.y, i, "-");
-    mvwprintw(mapscr, room->position.y + room->height, i, "-");
-    for (j = room->position.y + 1; j < room->position.y + room->height; j++) {
-      if (i == room->position.x || i == room->position.x + room->width - 1) {
-        mvwprintw(mapscr, j, i, "|");
-      } else {
-        mvwprintw(mapscr, j, i, ".");
-      }
-    }
-  }
-
-  mvwprintw(mapscr, room->doors[0]->y, room->doors[0]->x, "+");
-  mvwprintw(mapscr, room->doors[1]->y, room->doors[1]->x, "+");
-  mvwprintw(mapscr, room->doors[2]->y, room->doors[2]->x, "+");
-  mvwprintw(mapscr, room->doors[3]->y, room->doors[3]->x, "+");
-}
-
-/**
  * Printa na tela o layout do mapa, os monstros e o jogador
  */
 void drawLevel() {

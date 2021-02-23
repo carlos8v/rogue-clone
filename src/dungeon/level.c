@@ -10,8 +10,8 @@ Level * createLevel(int level) {
   Level *  newLevel = malloc(sizeof(Level));
   newLevel->level = level;
   newLevel->numberOfRooms = 3;
-  newLevel->rooms = roomsSetup();
   newLevel->tiles = saveTiles();
+  newLevel->rooms = roomsSetup(newLevel->tiles);
   newLevel->unitsMap = initializeUnitsMap();
   addMonsters(newLevel);
   return newLevel;
@@ -59,9 +59,9 @@ int checkUnits(Position * position, int xOffset, int yOffset) {
  * @param int yOffset
  * @return boolean
  */
-bool checkPosition(Position * position, int xOffset, int yOffset) {
+bool checkPosition(Position position, int xOffset, int yOffset) {
   char ** tiles = dungeon->levels[dungeon->currentLevel]->tiles;
-  switch (tiles[position->y + yOffset][position->x + xOffset]) {
+  switch (tiles[position.y + yOffset][position.x + xOffset]) {
     case '@': case '%': case '+':
     case '#': case '.':
       return true;
@@ -71,7 +71,7 @@ bool checkPosition(Position * position, int xOffset, int yOffset) {
 }
 
 /**
- * Retorna um array com todos os caractéres presentes 
+ * Retorna um array com todos os caracteres presentes 
  * no level atual, ignorando items ou monstros
  *
  * @return char**
@@ -102,7 +102,7 @@ void changeUnitsMap(char ** unitsMap, Position * position, int xOffset, int yOff
 }
 
 /**
- * Retorna um array para verificação dos caractéres do personagem e monstros
+ * Retorna um array para verificação dos caracteres do personagem e monstros
  *
  * @return char**
  */

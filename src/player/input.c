@@ -50,7 +50,7 @@ bool handleInput(int input) {
         attack(player->stats, enemyPosition, MONSTER);
         shouldMove = true;
       }
-      else if (checkPosition(player->position, offset.x, offset.y)) {
+      else if (checkPosition(*player->position, offset.x, offset.y)) {
         char ** unitsMap = dungeon->levels[dungeon->currentLevel]->unitsMap;
         changeUnitsMap(unitsMap, player->position, offset.x, offset.y, player->symbol);
         player->position->x += offset.x;

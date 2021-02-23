@@ -91,7 +91,6 @@ Dungeon * dungeon;
 
 bool screenSetup();
 void createBorders();
-void drawRoom(Room * room);
 void drawLevel();
 void drawStats();
 void drawUnit(Position * position, char symbol, int color);
@@ -115,7 +114,7 @@ char ** initializeUnitsMap();
 void changeUnitsMap(char ** unitsMap, Position * position, int xOffset, int yOffset, char symbol);
 bool outOfBounds(Position position, int xOffset, int yOffset);
 int checkUnits(Position * position, int xOffset, int yOffset);
-bool checkPosition(Position * position, int xOffset, int yOffset);
+bool checkPosition(Position position, int xOffset, int yOffset);
 
 Player * playerSetup();
 
@@ -135,7 +134,8 @@ double getDistance(Position initial, Position final, bool oval);
 bool isInRange(Position initial, Position final, int range, bool perspective, bool smooth);
 void attack(Stats * unit, Position enemyPosition, int enemyType);
 
-Room ** roomsSetup();
+Room ** roomsSetup(char ** tiles);
 Room * createRoom(int x, int y, int height, int width);
-void connectDoors(Position * doorOne, Position * doorTwo);
+void saveRoom(Room * room, char ** tiles);
+void connectDoors(Position * doorOne, Position * doorTwo, char ** tiles);
 #endif
